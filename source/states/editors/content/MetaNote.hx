@@ -33,9 +33,6 @@ class MetaNote extends Note
 		else
 			loadPixelNoteAnims();
 
-		if(Note.globalRgbShaders.contains(rgbShader.parent)) //Is using a default shader
-			rgbShader = new RGBShaderReference(this, Note.initializeGlobalRGBShader(noteData));
-
 		animation.play(Note.colArray[this.noteData % Note.colArray.length] + 'Scroll');
 		updateHitbox();
 		if(width > height)

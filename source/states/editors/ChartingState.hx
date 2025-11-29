@@ -650,7 +650,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		gameOverLoopInputText.text = PlayState.SONG.gameOverLoop;
 		gameOverRetryInputText.text = PlayState.SONG.gameOverEnd;
 
-		noRGBCheckBox.checked = (PlayState.SONG.disableNoteRGB == true);
 
 		noteTextureInputText.text = PlayState.SONG.arrowSkin;
 		noteSplashesInputText.text = PlayState.SONG.splashSkin;
@@ -2416,7 +2415,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var gameOverSndInputText:PsychUIInputText;
 	var gameOverLoopInputText:PsychUIInputText;
 	var gameOverRetryInputText:PsychUIInputText;
-	var noRGBCheckBox:PsychUICheckBox;
 	var noteTextureInputText:PsychUIInputText;
 	var noteSplashesInputText:PsychUIInputText;
 	function addDataTab()
@@ -2453,8 +2451,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 			if(cur.trim().length < 1) Reflect.deleteField(PlayState.SONG, 'gameOverEnd');
 		}
 
-		objY += 35;
-		noRGBCheckBox = new PsychUICheckBox(objX, objY, 'Disable Note RGB', 100, updateNotesRGB);
+	
 		
 		objY += 40;
 		noteTextureInputText = new PsychUIInputText(objX, objY, 120, '');
@@ -2504,7 +2501,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		tab_group.add(gameOverSndInputText);
 		tab_group.add(gameOverLoopInputText);
 		tab_group.add(gameOverRetryInputText);
-		tab_group.add(noRGBCheckBox);
 
 		tab_group.add(new FlxText(noteTextureInputText.x, noteTextureInputText.y - 15, 100, 'Note Texture:'));
 		tab_group.add(new FlxText(noteSplashesInputText.x, noteSplashesInputText.y - 15, 120, 'Note Splashes Texture:'));
@@ -4617,32 +4613,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		return PlayState.SONG.notes != null ? PlayState.SONG.notes[curSec] : null;
 	}
 
-	function updateNotesRGB()
-	{
-		PlayState.SONG.disableNoteRGB = noRGBCheckBox.checked;
-
-		for (note in notes)
-		{
-			if(note == null) continue;
-
-			note.rgbShader.enabled = !noRGBCheckBox.checked;
-			if(note.rgbShader.enabled)
-			{
-				var data = backend.NoteTypesConfig.loadNoteTypeData(note.noteType);
-				if(data == null || data.length < 1) continue;
-
-				for (line in data)
-				{
-					var prop:String = line.property.join('.');
-					if(prop == 'rgbShader.enabled')
-						note.rgbShader.enabled = line.value;
-				}
-			}
-		}
-
-		for (note in strumLineNotes)
-			note.rgbShader.enabled = !noRGBCheckBox.checked;
-	}
 
 	function updateGridVisibility()
 	{
@@ -4833,7 +4803,6 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 	override function destroy()
 	{
-		Note.globalRgbShaders = [];
 		backend.NoteTypesConfig.clearNoteTypesData();
 
 		for (num => text in MetaNote.noteTypeTexts)
