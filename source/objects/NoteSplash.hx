@@ -1,13 +1,6 @@
 package objects;
 
 import backend.animation.PsychAnimationController;
-import flixel.system.FlxAssets.FlxShader;
-
-typedef RGB = {
-	r:Null<Int>,
-	g:Null<Int>,
-	b:Null<Int>
-}
 
 typedef NoteSplashAnim = {
 	name:String,
@@ -22,7 +15,6 @@ typedef NoteSplashConfig = {
 	animations:Map<String, NoteSplashAnim>,
 	scale:Float,
 	allowPixel:Bool,
-	rgb:Array<Null<RGB>>
 }
 
 class NoteSplash extends FlxSprite
@@ -97,7 +89,6 @@ class NoteSplash extends FlxSprite
 					animations: new Map(),
 					scale: config.scale,
 					allowPixel: config.allowPixel,
-					rgb: config.rgb
 				}
 
 				for (i in Reflect.fields(config.animations))
@@ -298,8 +289,6 @@ class NoteSplash extends FlxSprite
 	public static function getSplashSkinPostfix()
 	{
 		var skin:String = '';
-		if (ClientPrefs.data.splashSkin != ClientPrefs.defaultData.splashSkin)
-			skin = '-' + ClientPrefs.data.splashSkin.trim().toLowerCase().replace(' ', '-');
 		return skin;
 	}
 
@@ -308,8 +297,7 @@ class NoteSplash extends FlxSprite
 		return {
 			animations: new Map(),
 			scale: 1,
-			allowPixel: true,
-			rgb: null
+			allowPixel: true
 		}
 	}
 

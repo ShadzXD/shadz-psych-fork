@@ -22,9 +22,6 @@ typedef NoteSplashData = {
 	texture:String,
 	useGlobalShader:Bool, //breaks r/g/b but makes it copy default colors for your custom note
 	antialiasing:Bool,
-	r:FlxColor,
-	g:FlxColor,
-	b:FlxColor,
 	a:Float
 }
 
@@ -98,9 +95,6 @@ class Note extends FlxSprite
 		texture: null,
 		antialiasing: !PlayState.isPixelStage,
 		useGlobalShader: false,
-		r: -1,
-		g: -1,
-		b: -1,
 		a: ClientPrefs.data.splashAlpha
 	};
 
@@ -177,8 +171,6 @@ class Note extends FlxSprite
 					//this used to change the note texture to HURTNOTE_assets.png,
 					//but i've changed it to something more optimized with the implementation of RGBPalette:
 					// splash data and colors
-					noteSplashData.r = 0xFFFF0000;
-					noteSplashData.g = 0xFF101010;
 					noteSplashData.texture = 'noteSplashes/noteSplashes-electric';
 
 					// gameplay data
@@ -246,14 +238,13 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			alpha = 1;
-			multAlpha = 1;
+			alpha = 0.5;
+			multAlpha = 0.5;
 			hitsoundDisabled = true;
 			if(ClientPrefs.data.downScroll) flipY = true;
-
+			scale.y = 0.65;
 			offsetX += width / 2;
 			copyAngle = false;
-
 			animation.play(colArray[noteData % colArray.length] + 'holdend');
 
 			updateHitbox();
@@ -267,11 +258,11 @@ class Note extends FlxSprite
 			{
 				prevNote.animation.play(colArray[prevNote.noteData % colArray.length] + 'hold');
 
-				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
+				prevNote.scale.y = Conductor.stepCrochet / 100 * 1.03;
 				if(createdFrom != null && createdFrom.songSpeed != null) prevNote.scale.y *= createdFrom.songSpeed;
 
 				if(PlayState.isPixelStage) {
-					prevNote.scale.y *= 1.19;
+					prevNote.scale.y *= 4.58;
 					prevNote.scale.y *= (6 / height); //Auto adjust note size
 				}
 				prevNote.updateHitbox();
@@ -367,8 +358,6 @@ class Note extends FlxSprite
 	public static function getNoteSkinPostfix()
 	{
 		var skin:String = '';
-		if(ClientPrefs.data.noteSkin != ClientPrefs.defaultData.noteSkin)
-			skin = '-' + ClientPrefs.data.noteSkin.trim().toLowerCase().replace(' ', '_');
 		return skin;
 	}
 

@@ -79,7 +79,6 @@ class NoteOffsetState extends MusicBeatState
 
 		rating = new FlxSprite().loadGraphic(Paths.image('sick'));
 		rating.cameras = [camHUD];
-		rating.antialiasing = ClientPrefs.data.antialiasing;
 		rating.setGraphicSize(Std.int(rating.width * 0.7));
 		rating.updateHitbox();
 		
@@ -408,10 +407,7 @@ class NoteOffsetState extends MusicBeatState
 			MusicBeatState.switchState(new options.OptionsState());
 			if(OptionsState.onPlayState)
 			{
-				if(ClientPrefs.data.pauseMusic != 'None')
-					FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)));
-				else
-					FlxG.sound.music.volume = 0;
+				FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath('breakfast')));		
 			}
 			else FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			FlxG.mouse.visible = false;
