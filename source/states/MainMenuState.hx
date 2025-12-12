@@ -36,8 +36,6 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
-
-	static var showOutdatedWarning:Bool = true;
 	override function create()
 	{
 		super.create();
@@ -115,13 +113,6 @@ class MainMenuState extends MusicBeatState
 		#end
 		#end
 
-		#if CHECK_FOR_UPDATES
-		if (showOutdatedWarning && ClientPrefs.data.checkForUpdates && substates.OutdatedSubState.updateVersion != psychEngineVersion) {
-			persistentUpdate = false;
-			showOutdatedWarning = false;
-			openSubState(new substates.OutdatedSubState());
-		}
-		#end
 
 		FlxG.camera.follow(camFollow, null, 0.15);
 	}
