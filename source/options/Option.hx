@@ -44,9 +44,8 @@ class Option
 	public function new(name:String, description:String = '', variable:String, type:OptionType = BOOL, ?options:Array<String> = null, ?translation:String = null)
 	{
 		_name = name;
-		_translationKey = translation != null ? translation : _name;
-		this.name = Language.getPhrase('setting_$_translationKey', name);
-		this.description = Language.getPhrase('description_$_translationKey', description);
+		this.name = name;
+		this.description = description;
 		this.variable = variable;
 		this.type = type;
 		this.options = options;
@@ -123,17 +122,13 @@ class Option
 
 	var _name:String = null;
 	var _text:String = null;
-	var _translationKey:String = null;
 	private function get_text()
 		return _text;
 
 	private function set_text(newValue:String = '')
 	{
-		if(child != null)
-		{
-			_text = newValue;
-			child.text = Language.getPhrase('setting_$_translationKey-${getValue()}', _text);
-			return _text;
+		if(child != null) {
+			child.text = newValue;
 		}
 		return null;
 	}

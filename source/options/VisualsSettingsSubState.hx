@@ -9,7 +9,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 	var noteY:Float = 90;
 	public function new()
 	{
-		title = Language.getPhrase('visuals_menu', 'Visuals Settings');
+		title = 'Visuals Settings';
 		rpcTitle = 'Visuals Settings Menu'; //for Discord Rich Presence
 
 		var option:Option = new Option('Note Splash Opacity',
