@@ -200,7 +200,6 @@ class Note extends FlxSprite
 
 		animation = new PsychAnimationController(this);
 
-		antialiasing = ClientPrefs.data.antialiasing;
 		if(createdFrom == null) createdFrom = PlayState.instance;
 
 		if (prevNote == null)

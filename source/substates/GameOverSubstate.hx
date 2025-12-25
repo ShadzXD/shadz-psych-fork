@@ -85,14 +85,13 @@ class GameOverSubstate extends MusicBeatSubstate
 		PlayState.instance.setOnScripts('inGameOver', true);
 		PlayState.instance.callOnScripts('onGameOverStart', []);
 		FlxG.sound.music.loadEmbedded(Paths.music(loopSoundName), true);
-
+		//TODO: Move this to hscript
 		if(characterName == 'pico-dead')
 		{
 			overlay = new FlxSprite(boyfriend.x + 205, boyfriend.y - 80);
 			overlay.frames = Paths.getSparrowAtlas('Pico_Death_Retry');
 			overlay.animation.addByPrefix('deathLoop', 'Retry Text Loop', 24, true);
 			overlay.animation.addByPrefix('deathConfirm', 'Retry Text Confirm', 24, false);
-			overlay.antialiasing = ClientPrefs.data.antialiasing;
 			overlayConfirmOffsets.set(250, 200);
 			overlay.visible = false;
 			add(overlay);
@@ -118,7 +117,6 @@ class GameOverSubstate extends MusicBeatSubstate
 				var neneKnife:FlxSprite = new FlxSprite(boyfriend.x - 450, boyfriend.y - 250);
 				neneKnife.frames = Paths.getSparrowAtlas('NeneKnifeToss');
 				neneKnife.animation.addByPrefix('anim', 'knife toss', 24, false);
-				neneKnife.antialiasing = ClientPrefs.data.antialiasing;
 				neneKnife.animation.finishCallback = function(_)
 				{
 					remove(neneKnife);

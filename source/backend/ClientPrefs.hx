@@ -197,7 +197,8 @@ class ClientPrefs {
 			FlxG.sound.volume = FlxG.save.data.volume;
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
-
+		
+		FlxSprite.defaultAntialiasing = data.antialiasing;
 		#if DISCORD_ALLOWED DiscordClient.check(); #end
 
 		// controls on a separate save file

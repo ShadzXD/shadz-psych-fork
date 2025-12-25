@@ -109,9 +109,12 @@ class Character extends FlxAnimate
 		curCharacter = character;
 		var characterPath:String = 'characters/$character.json';
 
-		var path:String = Paths.getPath(characterPath, TEXT);
-
+		var path:String = Paths.getPath(characterPath, TEXT, null, true);
+		#if MODS_ALLOWED
+		if (!FileSystem.exists(path))
+		#else
 		if (!Assets.exists(path))
+		#end
 		{
 			path = Paths.getSharedPath('characters/' + DEFAULT_CHARACTER + '.json'); //If a character couldn't be found, change him to BF just to prevent a crash
 			missingCharacter = true;

@@ -21,7 +21,7 @@ class ChartingGridSprite extends FlxSprite
 		this.columns = columns;
 		scrollFactor.x = 0;
 		active = false;
-
+		antialiasing = false;
 		scale.set(ChartingState.GRID_SIZE, ChartingState.GRID_SIZE);
 		loadGrid(color1, color2);
 		updateHitbox();
