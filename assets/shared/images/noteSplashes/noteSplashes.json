@@ -1,116 +1,116 @@
 {
 	"animations": {
-		"blue2": {
-			"offsets": [
-				-19,
-				-15
-			],
-			"noteData": 5,
-			"fps": [
-				22,
-				26
-			],
-			"prefix": "note impact 2 blue",
-			"indices": [],
-			"name": "blue2"
-		},
 		"purple": {
+			"noteData": 0,
 			"offsets": [
 				-37,
 				-24
 			],
-			"noteData": 0,
 			"fps": [
 				22,
 				26
 			],
 			"prefix": "note impact 1 purple",
-			"indices": [],
-			"name": "purple"
+			"name": "purple",
+			"indices": []
 		},
-		"red": {
+		"blue2": {
+			"noteData": 5,
 			"offsets": [
-				-44,
-				-28
+				-25,
+				-32
 			],
-			"noteData": 3,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "note impact 1 red",
-			"indices": [],
-			"name": "red"
+			"prefix": "note impact 2 blue",
+			"name": "blue2",
+			"indices": []
 		},
 		"red2": {
-			"offsets": [
-				-41,
-				-17
-			],
 			"noteData": 7,
+			"offsets": [
+				-31,
+				-23
+			],
 			"fps": [
 				22,
 				26
 			],
 			"prefix": "note impact 2 red",
-			"indices": [],
-			"name": "red2"
+			"name": "red2",
+			"indices": []
 		},
-		"blue": {
+		"red": {
+			"noteData": 3,
 			"offsets": [
-				-42,
-				-19
+				-44,
+				-28
 			],
-			"noteData": 1,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "note impact 1  blue",
-			"indices": [],
-			"name": "blue"
+			"prefix": "note impact 1 red",
+			"name": "red",
+			"indices": []
 		},
 		"purple2": {
+			"noteData": 4,
 			"offsets": [
 				-28,
 				-22
 			],
-			"noteData": 4,
 			"fps": [
 				22,
 				26
 			],
 			"prefix": "note impact 2 purple",
-			"indices": [],
-			"name": "purple2"
+			"name": "purple2",
+			"indices": []
 		},
-		"green": {
+		"blue": {
+			"noteData": 1,
 			"offsets": [
-				-35,
-				-22
+				-40,
+				-26
 			],
-			"noteData": 2,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "note impact 1 green",
-			"indices": [],
-			"name": "green"
+			"prefix": "note impact 1  blue",
+			"name": "blue",
+			"indices": []
 		},
 		"green2": {
+			"noteData": 6,
 			"offsets": [
 				-31,
 				-26
 			],
-			"noteData": 6,
 			"fps": [
 				22,
 				26
 			],
 			"prefix": "note impact 2 green",
-			"indices": [],
-			"name": "green2"
+			"name": "green2",
+			"indices": []
+		},
+		"green": {
+			"noteData": 2,
+			"offsets": [
+				-42,
+				-25
+			],
+			"fps": [
+				22,
+				26
+			],
+			"prefix": "note impact 1 green",
+			"name": "green",
+			"indices": []
 		}
 	},
 	"allowPixel": true,

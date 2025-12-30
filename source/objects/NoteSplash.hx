@@ -40,7 +40,7 @@ class NoteSplash extends FlxSprite
 
 		animation = new PsychAnimationController(this);
 
-
+		trace('created splash');
 		loadSplash(splash);
 	}
 
@@ -219,7 +219,7 @@ class NoteSplash extends FlxSprite
 			spawned = false;
 		}
 
-		alpha = ClientPrefs.data.splashAlpha;
+		alpha = ClientPrefs.data.noteSplashAlpha;
 		if (note != null) alpha = note.noteSplashData.a;
 
 		antialiasing = ClientPrefs.data.antialiasing;

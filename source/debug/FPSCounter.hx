@@ -4,7 +4,7 @@ import flixel.FlxG;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
 import openfl.system.System;
-
+import flixel.util.FlxStringUtil;
 /**
 	The FPS class provides an easy-to-use monitor to display
 	the current frame rate of an OpenFL project
@@ -62,13 +62,16 @@ class FPSCounter extends TextField
 	}
 
 	public dynamic function updateText():Void { // so people can override it in hscript
-		text = 'FPS: ${currentFPS} / ' + ClientPrefs.data.framerate;
-		//kill off mem counter for now.
+		text = 'FPS: ${currentFPS} / ' + ClientPrefs.data.framerate
+		+ '\nMemory: ${FlxStringUtil.formatBytes(memoryMegas)}';
 		textColor = 0xFFFFFFFF;
 		if (currentFPS < FlxG.drawFramerate * 0.5)
 			textColor = 0xFFFF0000;
 	}
 
 	inline function get_memoryMegas():Float
-		return cast(System.totalMemory, UInt);
+	{
+		return cpp.vm.Gc.memInfo64(cpp.vm.Gc.MEM_INFO_USAGE);
+
+	}
 }

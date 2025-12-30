@@ -395,7 +395,7 @@ class PhillyStreets extends BaseStage
 		else
 			abot.lookLeft();
 
-		if(finishInstantly) abot.eyes.anim.curAnim.curFrame = abot.eyes.anim.curAnim.numFrames - 1;
+		if(finishInstantly) abot.eyes.animation.curAnim.curFrame = abot.eyes.animation.curAnim.numFrames - 1;
 	}
 
 	override function startSong()
@@ -435,7 +435,7 @@ class PhillyStreets extends BaseStage
 		function createCan()
 		{
 			if(didCreateCan) return;
-			spraycan = new SpraycanAtlasSprite(spraycanPile.x + 530, spraycanPile.y - 240);
+			spraycan = new SpraycanAtlasSprite(spraycanPile.x + 80, spraycanPile.y - 840);
 			add(spraycan);
 
 			lightCanSnd = new FlxSound();
@@ -603,7 +603,7 @@ class PhillyStreets extends BaseStage
 
 	override function beatHit()
 	{
-		//if(curBeat % 2 == 0) abot.beatHit();
+		if(curBeat % 2 == 0) abot.beatHit();
 		switch(currentNeneState) {
 			case STATE_READY:
 				if (blinkCountdown == 0)

@@ -1,7 +1,7 @@
 package states;
 
 import lime.app.Future;
-import sys.thread.FixedThreadPool;
+
 import haxe.Json;
 import lime.utils.Assets;
 import openfl.display.BitmapData;
@@ -17,8 +17,11 @@ import backend.Song;
 import backend.StageData;
 import objects.Character;
 
+#if (target.threaded)
+import sys.thread.FixedThreadPool;
 import sys.thread.Thread;
 import sys.thread.Mutex;
+#end
 
 import objects.Note;
 import objects.NoteSplash;
@@ -539,7 +542,7 @@ class LoadingState extends MusicBeatState
 			var myKey = '$prefix/$member$ext';
 			if(parentFolder == 'songs') myKey = '$member$ext';
 
-			//trace('attempting on $prefix: $myKey');
+			trace('attempting on $prefix: $myKey');
 			var doTrace:Bool = false;
 			if(member.endsWith('/') || (!Paths.fileExists(myKey, type, false, parentFolder) && (doTrace = true)))
 			{

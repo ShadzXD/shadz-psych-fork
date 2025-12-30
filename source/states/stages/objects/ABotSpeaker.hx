@@ -64,18 +64,17 @@ class ABotSpeaker extends FlxSpriteGroup
 		add(eyeBg);
 
 		eyes = new FlxAnimate(-10, 230);
-		eyes.frames =  Paths.getTextureAtlas('abot/systemEyes');
+		eyes.frames =  Paths.getTextureAtlas('abot/systemEyes', 'weekend1');
 		eyes.anim.addBySymbolIndices('lookleft', 'a bot eyes lookin', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17], 24, false);
 		eyes.anim.addBySymbolIndices('lookright', 'a bot eyes lookin', [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35], 24, false);
 		eyes.anim.play('lookright', true);
-		//Seyes.anim.curAnim.curFrame = eyes.anim.curAnim.numFrames - 1;
 		add(eyes);
 
 		speaker = new FlxAnimate(-65, -10);
-		speaker.frames =  Paths.getTextureAtlas('abot/abotSystem');
-		//speaker.anim.addByTimeline("", speaker.library.timeline);
+		speaker.frames =  Paths.getTextureAtlas('abot/abotSystem', 'weekend1');
+		speaker.anim.addByTimeline("", speaker.library.timeline);
 
-		//speaker.anim.play('', true);
+		speaker.anim.play('', true);
 		add(speaker);
 	}
 

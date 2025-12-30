@@ -20,7 +20,7 @@ class MusicBeatState extends FlxState
 	}
 
 	var _psychCameraInitialized:Bool = false;
-
+	static var transitionTime:Float = 0.4;
 	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
 	public static function getVariables()
 		return getState().variables;
@@ -34,7 +34,7 @@ class MusicBeatState extends FlxState
 		super.create();
 
 		if(!skip) {
-			openSubState(new CustomFadeTransition(0.5, true));
+			openSubState(new CustomFadeTransition(transitionTime, true));
 		}
 		FlxTransitionableState.skipNextTransOut = false;
 		timePassedOnState = 0;
@@ -156,7 +156,7 @@ class MusicBeatState extends FlxState
 		if(nextState == null)
 			nextState = FlxG.state;
 
-		FlxG.state.openSubState(new CustomFadeTransition(0.5, false));
+		FlxG.state.openSubState(new CustomFadeTransition(transitionTime, false));
 		if(nextState == FlxG.state)
 			CustomFadeTransition.finishCallback = function() FlxG.resetState();
 		else

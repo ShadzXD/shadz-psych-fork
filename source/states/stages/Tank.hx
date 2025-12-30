@@ -82,8 +82,8 @@ class Tank extends BaseStage
 					setStartCallback(ughIntro);
 				case 'guns':
 					setStartCallback(gunsIntro);
-				case 'stress':
-					setStartCallback(stressIntro);
+				//case 'stress':
+					//setStartCallback(stressIntro);
 			}
 		}
 	}
@@ -144,11 +144,10 @@ class Tank extends BaseStage
 		camHUD.visible = false;
 		//inCutscene = true; //this would stop the camera movement, oops
 
-			tankman = new FlxAnimate(dad.x - 30, dad.y - 20);
-		tankman.frames = Paths.getTextureAtlas('cutscenes/tankman', 'week7');
+		tankman = new FlxAnimate(dad.x - 30, dad.y - 20);
+		tankman.frames = FlxAnimateFrames.fromAnimate(Paths.getFolderPath('images/cutscenes/tankman', 'week7'));
 		addBehindDad(tankman);
 		cutsceneHandler.push(tankman);
-
 
 		cutsceneHandler.finishCallback = function()
 		{
@@ -292,7 +291,7 @@ class Tank extends BaseStage
 		Paths.sound('stressCutscene');
 
 		pico = new FlxAnimate(gf.x + 150, gf.y + 450);
-		pico.frames = Paths.getTextureAtlas('cutscenes/tankman', 'week7');
+		pico.frames = FlxAnimateFrames.fromAnimate(Paths.getFolderPath('images/cutscenes/picoAppears', 'week7'));
 		pico.anim.addBySymbol('dance', 'GF Dancing at Gunpoint', 24, true);
 		pico.anim.addBySymbol('dieBitch', 'GF Time to Die sequence', 24, false);
 		pico.anim.addBySymbol('picoAppears', 'Pico Saves them sequence', 24, false);
@@ -302,8 +301,9 @@ class Tank extends BaseStage
 		cutsceneHandler.push(pico);
 
 		// prepare pico animation cycle
+		/*
 		function picoStressCycle() {
-			switch (pico.anim.curAnim.name) {
+			switch (pico.curInstance.symbol.name) {
 				case "dieBitch", "GF Time to Die sequence":
 					pico.anim.play('picoAppears', true);
 					boyfriendGroup.alpha = 1;
@@ -322,12 +322,12 @@ class Tank extends BaseStage
 				case "picoEnd", "Pico Dual Wield on Speaker idle":
 					gfGroup.alpha = 1;
 					pico.visible = false;
-					//if (pico.anim.curAnim.finished)
-						//remove(picoStressCycle);
+					if (pico.anim.onComplete.has(picoStressCycle)) // for safety
+						pico.anim.onComplete.remove(picoStressCycle);
 			}
 		}
-		//if(pico.anim.curAnim.finished) picoStressCycle();
-
+		pico.anim.onComplete.add(picoStressCycle);
+		*/
 		boyfriendCutscene = new FlxSprite(boyfriend.x + 5, boyfriend.y + 20);
 		boyfriendCutscene.frames = Paths.getSparrowAtlas('characters/BOYFRIEND');
 		boyfriendCutscene.animation.addByPrefix('idle', 'BF idle dance', 24, false);

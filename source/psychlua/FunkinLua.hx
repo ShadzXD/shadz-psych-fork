@@ -155,7 +155,6 @@ class FunkinLua {
 			set('playbackRate', 1);
 			#end
 	
-			set('guitarHeroSustains', game.guitarHeroSustains);
 			set('instakillOnMiss', game.instakillOnMiss);
 			set('botPlay', game.cpuControlled);
 			set('practice', game.practiceMode);
@@ -201,7 +200,7 @@ class FunkinLua {
 		// Noteskin/Splash
 		set('noteSkinPostfix', Note.getNoteSkinPostfix());
 		set('splashSkinPostfix', NoteSplash.getSplashSkinPostfix());
-		set('splashAlpha', ClientPrefs.data.splashAlpha);
+		set('splashAlpha', ClientPrefs.data.noteSplashAlpha);
 
 		// build target (windows, mac, linux, etc.)
 		set('buildTarget', LuaUtils.getBuildTarget());
@@ -854,7 +853,6 @@ class FunkinLua {
 			game.ratingFC = value;
 			game.setOnScripts('ratingFC', game.ratingFC);
 		});
-		Lua_helper.add_callback(lua, "updateScoreText", function() game.updateScoreText());
 		Lua_helper.add_callback(lua, "getMouseX", function(?camera:String = 'game') {
 			var cam:FlxCamera = LuaUtils.cameraFromString(camera);
 			return FlxG.mouse.getScreenPosition(cam).x;
@@ -1125,25 +1123,6 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "luaSoundExists", function(tag:String) {
 			var obj:FlxSound = MusicBeatState.getVariables().get('sound_$tag');
 			return (obj != null && Std.isOfType(obj, FlxSound));
-		});
-
-		Lua_helper.add_callback(lua, "setHealthBarColors", function(left:String, right:String) {
-			var left_color:Null<FlxColor> = null;
-			var right_color:Null<FlxColor> = null;
-			if (left != null && left != '')
-				left_color = CoolUtil.colorFromString(left);
-			if (right != null && right != '')
-				right_color = CoolUtil.colorFromString(right);
-			game.healthBar.setColors(left_color, right_color);
-		});
-		Lua_helper.add_callback(lua, "setTimeBarColors", function(left:String, right:String) {
-			var left_color:Null<FlxColor> = null;
-			var right_color:Null<FlxColor> = null;
-			if (left != null && left != '')
-				left_color = CoolUtil.colorFromString(left);
-			if (right != null && right != '')
-				right_color = CoolUtil.colorFromString(right);
-			game.timeBar.setColors(left_color, right_color);
 		});
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = 'game') {
