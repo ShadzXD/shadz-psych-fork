@@ -557,10 +557,6 @@ class PlayState extends MusicBeatState
 		if(!ClientPrefs.data.ghostTapping) for (i in 1...4) Paths.sound('missnote$i');
 		Paths.image('alphabet');
 
-		if (PauseSubState.songName != null)
-			Paths.music(PauseSubState.songName);
-		else 
-			Paths.music(Paths.formatToSongPath('breakfast'));
 
 		resetRPC();
 
@@ -1180,11 +1176,11 @@ class PlayState extends MusicBeatState
 		{
 			if (songData.needsVoices)
 			{
-				var playerVocals = Paths.voices(songData.song, (boyfriend.vocalsFile == null || boyfriend.vocalsFile.length < 1) ? 'Player' : boyfriend.vocalsFile);
-				vocals.loadEmbedded(playerVocals != null ? playerVocals : Paths.voices(songData.song));
+				var playerVocals = Paths.voicePath(songData.song, (boyfriend.vocalsFile == null || boyfriend.vocalsFile.length < 1) ? 'Player' : boyfriend.vocalsFile);
+				vocals.loadStreamed(playerVocals != null ? playerVocals : Paths.voicePath(songData.song));
 				
-				var oppVocals = Paths.voices(songData.song, (dad.vocalsFile == null || dad.vocalsFile.length < 1) ? 'Opponent' : dad.vocalsFile);
-				if(oppVocals != null && oppVocals.length > 0) opponentVocals.loadEmbedded(oppVocals);
+				var oppVocals = Paths.voicePath(songData.song, (dad.vocalsFile == null || dad.vocalsFile.length < 1) ? 'Opponent' : dad.vocalsFile);
+				if(oppVocals != null && oppVocals.length > 0) opponentVocals.loadStreamed(oppVocals);
 			}
 		}
 		catch (e:Dynamic) {}
@@ -1199,14 +1195,13 @@ class PlayState extends MusicBeatState
 		inst = new FlxSound();
 		try
 		{
-			inst.loadEmbedded(Paths.inst(songData.song));
+			inst.loadStreamed(Paths.instPath(songData.song));
 		}
 		catch (e:Dynamic) {}
 		FlxG.sound.list.add(inst);
 
 		notes = new FlxTypedGroup<Note>();
 		noteGroup.add(notes);
-
 		try
 		{
 			var eventsChart:SwagSong = Song.getChart('events', songName);
@@ -1492,10 +1487,11 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	#if DISCORD_ALLOWED
 	override public function onFocus():Void
 	{
 		super.onFocus();
+		trace('got focus');
+		resyncVocals();
 		if (!paused && health > 0)
 		{
 			resetRPC(Conductor.songPosition > 0.0);
@@ -1505,25 +1501,24 @@ class PlayState extends MusicBeatState
 	override public function onFocusLost():Void
 	{
 		super.onFocusLost();
-		if (!paused && health > 0 && autoUpdateRPC)
-		{
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
-		}
+		trace('lost focus');
+		//if (!paused && health > 0 && autoUpdateRPC)
+		//{
+		//	DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
+		//}
 	}
-	#end
+
 
 	// Updating Discord Rich Presence.
 	public var autoUpdateRPC:Bool = true; //performance setting for custom RPC things
 	function resetRPC(?showTime:Bool = false)
 	{
-		#if DISCORD_ALLOWED
 		if(!autoUpdateRPC) return;
 
-		if (showTime)
-			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.data.noteOffset);
-		else
-			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
-		#end
+		//if (showTime)
+		//	DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.data.noteOffset);
+		//else
+			//DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
 	}
 
 	function resyncVocals():Void
@@ -3462,4 +3457,6 @@ class PlayState extends MusicBeatState
 		#end
 		return false;
 	}
+
+	
 }

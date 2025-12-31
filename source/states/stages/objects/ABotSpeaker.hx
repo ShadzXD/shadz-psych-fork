@@ -84,7 +84,7 @@ class ABotSpeaker extends FlxSpriteGroup
 	override function update(elapsed:Float):Void
 	{
 		super.update(elapsed);
-		if(analyzer == null) return;
+		return;
 
 		levels = analyzer.getLevels(levels);
 		var oldLevelMax = levelMax;

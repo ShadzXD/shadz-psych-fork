@@ -10,6 +10,8 @@ class Init
 	public static var volumeUpKeys:Array<FlxKey> = [FlxKey.NUMPADPLUS, FlxKey.PLUS];
     public static function loadSettings()
     {
+		backend.Native.setWindowDarkMode(true, true);
+
         if(FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
 			FlxG.fullscreen = FlxG.save.data.fullscreen;

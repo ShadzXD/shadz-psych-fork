@@ -214,6 +214,25 @@ class Paths
 	inline static public function inst(song:String, ?modsAllowed:Bool = true):Sound
 		return returnSound('${formatToSongPath(song)}/Inst', 'songs', modsAllowed);
 
+    inline static public function musicPath(key:String, ?modsAllowed:Bool = true):String
+		return getPath('music/$key.$SOUND_EXT');
+
+	inline static public function instPath(key:String, ?modsAllowed:Bool = true):String
+	{
+		var file:String = getPath('${formatToSongPath(key)}/Inst.$SOUND_EXT', SOUND, 'songs', modsAllowed);
+		trace(file);
+
+		return file;
+
+	}
+	inline static public function voicePath(song:String, postfix:String = null, ?modsAllowed:Bool = true):String
+	{
+		var songKey:String = getPath('${formatToSongPath(song)}Voices', SOUND, 'songs', modsAllowed);
+		if(postfix != null) songKey += '-' + postfix;
+		songKey += '.' + SOUND_EXT;
+
+		return songKey;
+	}
 	inline static public function voices(song:String, postfix:String = null, ?modsAllowed:Bool = true):Sound
 	{
 		var songKey:String = '${formatToSongPath(song)}/Voices';

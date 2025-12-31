@@ -448,7 +448,7 @@ class LoadingState extends MusicBeatState
 				prepare(imgs, snds, mscs);
 			}
 
-			songsToPrepare.push('$folder/Inst');
+			//songsToPrepare.push('$folder/Inst');
 
 			var player1:String = song.player1;
 			var player2:String = song.player2;
@@ -460,13 +460,13 @@ class LoadingState extends MusicBeatState
 			preloadCharacter(player1, prefixVocals);
 			if (!dontPreloadDefaultVoices && prefixVocals != null)
 			{
-				if(Paths.fileExists('$prefixVocals-Player.${Paths.SOUND_EXT}', SOUND, false, 'songs') && Paths.fileExists('$prefixVocals-Opponent.${Paths.SOUND_EXT}', SOUND, false, 'songs'))
-				{
-					songsToPrepare.push('$prefixVocals-Player');
-					songsToPrepare.push('$prefixVocals-Opponent');
-				}
-				else if(Paths.fileExists('$prefixVocals.${Paths.SOUND_EXT}', SOUND, false, 'songs'))
-					songsToPrepare.push(prefixVocals);
+				//if(Paths.fileExists('$prefixVocals-Player.${Paths.SOUND_EXT}', SOUND, false, 'songs') && Paths.fileExists('$prefixVocals-Opponent.${Paths.SOUND_EXT}', SOUND, false, 'songs'))
+				//{
+					//songsToPrepare.push('$prefixVocals-Player');
+					//songsToPrepare.push('$prefixVocals-Opponent');
+				//}
+				//else if(Paths.fileExists('$prefixVocals.${Paths.SOUND_EXT}', SOUND, false, 'songs'))
+					//songsToPrepare.push(prefixVocals);
 			}
 
 			if (player2 != player1)
@@ -651,7 +651,7 @@ class LoadingState extends MusicBeatState
 	
 			if (prefixVocals != null && character.vocals_file != null && character.vocals_file.length > 0)
 			{
-				songsToPrepare.push(prefixVocals + "-" + character.vocals_file);
+				//songsToPrepare.push(prefixVocals + "-" + character.vocals_file);
 				if(char == PlayState.SONG.player1) dontPreloadDefaultVoices = true;
 			}
 		}

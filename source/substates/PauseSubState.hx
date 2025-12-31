@@ -59,7 +59,7 @@ class PauseSubState extends MusicBeatSubstate
 		try
 		{
 			var pauseSong:String = getPauseSong();
-			if(pauseSong != null) pauseMusic.loadEmbedded(Paths.music(pauseSong), true, true);
+			if(pauseSong != null) pauseMusic.loadStreamed(Paths.musicPath(pauseSong), true, true);
 		}
 		catch(e:Dynamic) {}
 		pauseMusic.volume = 0;
@@ -309,7 +309,6 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.canResync = false;
 					MusicBeatState.switchState(new OptionsState());
 					
-					FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath('breakfast')), pauseMusic.volume);
 					FlxTween.tween(FlxG.sound.music, {volume: 1}, 0.8);
 					FlxG.sound.music.time = pauseMusic.time;
 					

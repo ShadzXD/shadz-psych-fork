@@ -73,7 +73,6 @@ class Main extends Sprite
 
 		#if (cpp && windows)
 		backend.Native.fixScaling();
-		backend.Native.setWindowDarkMode(true, true);
 		#end
 		//FlxAssets.FONT_DEFAULT = Paths.font("vcr.ttf");
 		// Credits to MAJigsaw77 (he's the og author for this code)
