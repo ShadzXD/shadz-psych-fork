@@ -9,7 +9,7 @@ import flixel.util.FlxStringUtil;
 import states.StoryMenuState;
 import states.FreeplayState;
 import options.OptionsState;
-
+import backend.FunkinMusic;
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -55,7 +55,7 @@ class PauseSubState extends MusicBeatSubstate
 		}
 		difficultyChoices.push('BACK');
 
-		pauseMusic = new FlxSound();
+		pauseMusic = new FunkinMusic();
 		try
 		{
 			var pauseSong:String = getPauseSong();

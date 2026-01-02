@@ -54,7 +54,7 @@ import crowplexus.iris.Iris;
 import crowplexus.hscript.Expr.Error as IrisError;
 import crowplexus.hscript.Printer;
 #end
-
+import backend.FunkinMusic;
 /**
  * This is where all the Gameplay stuff happens and is managed
  *
@@ -147,9 +147,9 @@ class PlayState extends MusicBeatState
 
 	public var spawnTime:Float = 2000;
 
-	public var inst:FlxSound;
-	public var vocals:FlxSound;
-	public var opponentVocals:FlxSound;
+	public var inst:FunkinMusic;
+	public var vocals:FunkinMusic;
+	public var opponentVocals:FunkinMusic;
 
 	public var dad:Character = null;
 	public var gf:Character = null;
@@ -1170,8 +1170,8 @@ class PlayState extends MusicBeatState
 
 		curSong = songData.song;
 
-		vocals = new FlxSound();
-		opponentVocals = new FlxSound();
+		vocals = new FunkinMusic();
+		opponentVocals = new FunkinMusic();
 		try
 		{
 			if (songData.needsVoices)
@@ -1192,7 +1192,7 @@ class PlayState extends MusicBeatState
 		FlxG.sound.list.add(vocals);
 		FlxG.sound.list.add(opponentVocals);
 
-		inst = new FlxSound();
+		inst = new FunkinMusic();
 		try
 		{
 			inst.loadStreamed(Paths.instPath(songData.song));
@@ -1491,6 +1491,7 @@ class PlayState extends MusicBeatState
 	{
 		super.onFocus();
 		trace('got focus');
+		if(!paused)
 		resyncVocals();
 		if (!paused && health > 0)
 		{
@@ -1523,7 +1524,7 @@ class PlayState extends MusicBeatState
 
 	function resyncVocals():Void
 	{
-		if(finishTimer != null) return;
+		if(finishTimer != null || Math.floor(Conductor.songPosition)  < 0) return;
 
 		trace('resynced vocals at ' + Math.floor(Conductor.songPosition));
 
