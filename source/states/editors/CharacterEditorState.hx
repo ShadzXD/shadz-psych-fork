@@ -18,7 +18,7 @@ import states.editors.content.PsychJsonPrinter;
 import animate.FlxAnimate;
 import animate.FlxAnimateFrames;
 // flixel 5.7.0+ fix
-#if (FLX_DEBUG || flixel < version("5.7.0"))
+#if ( flixel < version("5.7.0"))
 typedef PointerGraphic = flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 #else
 @:bitmap("assets/images/debugger/cursorCross.png")
