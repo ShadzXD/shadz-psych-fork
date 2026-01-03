@@ -1,17 +1,14 @@
 package options;
 
-import objects.NoteSplash;
 import objects.Alphabet;
 
 class VisualsSettingsSubState extends BaseOptionsMenu
 {
-	var noteOptionID:Int = -1;
-	var noteY:Float = 90;
 	public function new()
 	{
 		title = 'Visuals Settings';
 		rpcTitle = 'Visuals Settings Menu'; //for Discord Rich Presence
-
+		/*
 		var option:Option = new Option('Note Splash Opacity',
 			'How much transparent should the Note Splashes be.',
 			'splashAlpha',
@@ -22,7 +19,7 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		option.decimals = 1;
 		addOption(option);
-
+		*/
 		var option:Option = new Option('Hide HUD',
 			'If checked, hides most HUD elements.',
 			'hideHud',

@@ -260,7 +260,11 @@ class PlayState extends MusicBeatState
 	public static var nextReloadAll:Bool = false;
 	// HUD Class Objects
 	public var hudClass:MainHUD;
-	var useHealth:Bool = false;
+	/**
+	 * Whether you want to use the normal Health variable.
+	 * Mainly tied to the hudclass, just in case you want to use your own spin on stuff.
+	 */
+	var useHealth:Bool = true;
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
@@ -466,7 +470,7 @@ class PlayState extends MusicBeatState
 		hudClass = new PsychHUD();
 		hudClass.cameras = [camHUD];
 		hudClass.visible = !ClientPrefs.data.hideHud;
-		useHealth = false;
+		useHealth = hudClass.useHealth;
 		add(hudClass);
 
 		noteGroup = new FlxTypedGroup<FlxBasic>();
@@ -1881,7 +1885,7 @@ class PlayState extends MusicBeatState
 
 				#if DISCORD_ALLOWED
 				// Game Over doesn't get his its variable because it's only used here
-				if(autoUpdateRPC) DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+				if(autoUpdateRPC) DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
 				#end
 				isDead = true;
 				return true;

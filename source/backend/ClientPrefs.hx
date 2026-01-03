@@ -30,6 +30,8 @@ import Init;
 	public var healthBarAlpha:Float = 1;
 	public var hitsoundVolume:Float = 0;
 	public var comboStacking:Bool = true;
+	public var windowDarkMode:Bool = true;
+
 	public var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 

@@ -10,6 +10,8 @@ class Init
 	public static var volumeUpKeys:Array<FlxKey> = [FlxKey.NUMPADPLUS, FlxKey.PLUS];
     public static function loadSettings()
     {
+		ClientPrefs.loadPrefs();
+
         if(FlxG.save.data != null && FlxG.save.data.fullscreen)
 		{
 			FlxG.fullscreen = FlxG.save.data.fullscreen;
@@ -22,7 +24,8 @@ class Init
 
 		FlxG.mouse.visible = false;
 
-        ClientPrefs.loadPrefs();
+		if(ClientPrefs.data.windowDarkMode)
+		backend.Native.setWindowDarkMode(true, true);
 
     }
 }

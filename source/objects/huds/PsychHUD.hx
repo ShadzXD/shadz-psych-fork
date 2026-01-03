@@ -18,10 +18,8 @@ class PsychHUD extends MainHUD
 	var ratingName:String = '?';
 	final IDLE_ICON_VALUE = 0;
 	final LOSING_ICON_VALUE = 1; 
-	final WINNING_ICON_VALUE = 2;
 	final ALLY_ICON_OFFSET = 60;
 	final ENEMY_ICON_OFFSET = 40;
-
 	public function new()
     {
 		super();
