@@ -2,7 +2,10 @@ package;
 import flixel.input.keyboard.FlxKey;
 import backend.WeekData;
 import states.StoryMenuState;
-
+/**
+ * Class Used for loading save data and, things which are unable to be loaded in Main.
+ * This is done so we dont have to rely on TitleState.
+ */
 class Init
 {
     public static var muteKeys:Array<FlxKey> = [FlxKey.ZERO];
@@ -25,7 +28,7 @@ class Init
 		FlxG.mouse.visible = false;
 
 		if(ClientPrefs.data.windowDarkMode)
-		backend.Native.setWindowDarkMode(true, true);
+		backend.Native.setWindowDarkMode(true, true); //Dark Mode is here and not in Main.hx because it sometimes doesnt load there.
 
     }
 }

@@ -64,7 +64,7 @@
     },
     {
       "name": "flixel-animate",
-        "type": "haxelib",
+      "type": "haxelib",
       "version": "1.4.0"
     }
     

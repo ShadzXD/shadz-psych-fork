@@ -8,7 +8,6 @@ import psychlua.CustomSubstate;
 #if LUA_ALLOWED
 import psychlua.FunkinLua;
 #end
-
 #if HSCRIPT_ALLOWED
 import crowplexus.iris.Iris;
 import crowplexus.iris.IrisConfig;
@@ -168,7 +167,7 @@ class HScript extends Iris
 		#end
 		set('Character', Character);
 		set('Alphabet', Alphabet);
-		set('Note', objects.Note);
+		set('Note', objects.notes.Note);
 		set('CustomSubstate', CustomSubstate);
 		#if (!flash && sys)
 		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);

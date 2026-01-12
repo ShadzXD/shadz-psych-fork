@@ -1,5 +1,5 @@
-package objects;
-/*
+package objects.notes;
+/**
   * Should probably also just redo most of this
 */
 class SustainSplash extends FlxSprite {
@@ -39,7 +39,7 @@ class SustainSplash extends FlxSprite {
   public function setupSusSplash(strum:StrumNote, daNote:Note, ?playbackRate:Float = 1):Void {
 
     final lengthToGet:Int = !daNote.isSustainNote ? daNote.tail.length : daNote.parent.tail.length;
-    if(lengthToGet <= 1 || strum.visible == false) //kill splash if size of hold is too small
+    if(strum.visible == false) //kill splash if size of hold is too small
     {
         kill();
         return;
@@ -53,7 +53,6 @@ class SustainSplash extends FlxSprite {
     strumNote = strum;
 		alpha = ClientPrefs.data.susSplashAlpha - (1 - strumNote.alpha);
 
-    trace(daNote.noteData);
     setPosition(strumNote.x, strumNote.y);
 
     offset.set(PlayState.isPixelStage ? 112.5 : 106.25, 100);

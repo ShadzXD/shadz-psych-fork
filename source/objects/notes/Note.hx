@@ -1,10 +1,10 @@
-package objects;
+package objects.notes;
 
 import backend.animation.PsychAnimationController;
 import backend.NoteTypesConfig;
 
 
-import objects.StrumNote;
+import objects.notes.StrumNote;
 
 import flixel.math.FlxRect;
 

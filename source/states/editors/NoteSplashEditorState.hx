@@ -1,8 +1,8 @@
 package states.editors;
 
-import objects.Note;
-import objects.NoteSplash;
-import objects.StrumNote;
+import objects.notes.Note;
+import objects.notes.NoteSplash;
+import objects.notes.StrumNote;
 
 import openfl.net.FileFilter;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
@@ -44,7 +44,7 @@ class NoteSplashEditorState extends MusicBeatState
         DiscordClient.changePresence('Note Splash Editor');
         #end
 
-        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menus/menuDesat'));
         bg.scrollFactor.set();
         bg.color = 0xFF505050;
         add(bg);      

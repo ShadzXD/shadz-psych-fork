@@ -73,13 +73,13 @@ class TitleState extends MusicBeatState
 		Conductor.bpm = musicBPM;
 
 		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
-		logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
+		logoBl.frames = Paths.getSparrowAtlas('menus/logoBumpin');
 
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
 		logoBl.animation.play('bump');
 		logoBl.updateHitbox();
 
-		gfDance = new FlxSprite(gfPosition.x, gfPosition.y);
+		gfDance = new FlxSprite(512, 40);
 		
 		if(ClientPrefs.data.shaders)
 		{
@@ -88,23 +88,23 @@ class TitleState extends MusicBeatState
 			logoBl.shader = swagShader.shader;
 		}
 		
-		gfDance.frames = Paths.getSparrowAtlas(characterImage);
+		gfDance.frames = Paths.getSparrowAtlas('menus/title/gfDanceTitle');
 		if(!useIdle)
 		{
-			gfDance.animation.addByIndices('danceLeft', animationName, danceLeftFrames, "", 24, false);
-			gfDance.animation.addByIndices('danceRight', animationName, danceRightFrames, "", 24, false);
+			gfDance.animation.addByIndices('danceLeft', 'gfDance', danceLeftFrames, "", 24, false);
+			gfDance.animation.addByIndices('danceRight', 'gfDance', danceRightFrames, "", 24, false);
 			gfDance.animation.play('danceRight');
 		}
 		else
 		{
-			gfDance.animation.addByPrefix('idle', animationName, 24, false);
+			gfDance.animation.addByPrefix('idle', 'gfDance', 24, false);
 			gfDance.animation.play('idle');
 		}
 
 
 		var animFrames:Array<FlxFrame> = [];
 		titleText = new FlxSprite(enterPosition.x, enterPosition.y);
-		titleText.frames = Paths.getSparrowAtlas('titleEnter');
+		titleText.frames = Paths.getSparrowAtlas('menus/title/titleEnter');
 		@:privateAccess
 		{
 			titleText.animation.findByPrefix(animFrames, "ENTER IDLE");
@@ -133,7 +133,7 @@ class TitleState extends MusicBeatState
 		credTextShit.screenCenter();
 		credTextShit.visible = false;
 
-		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('newgrounds_logo'));
+		ngSpr = new FlxSprite(0, FlxG.height * 0.52).loadGraphic(Paths.image('menus/title/newgrounds_logo'));
 		ngSpr.visible = false;
 		ngSpr.setGraphicSize(Std.int(ngSpr.width * 0.8));
 		ngSpr.updateHitbox();
@@ -153,10 +153,7 @@ class TitleState extends MusicBeatState
 		// credGroup.add(credTextShit);
 	}
 
-	var characterImage:String = 'gfDanceTitle';
-	var animationName:String = 'gfDance';
 
-	var gfPosition:FlxPoint = FlxPoint.get(512, 40);
 	var logoPosition:FlxPoint = FlxPoint.get(-150, -100);
 	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
 	

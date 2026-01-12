@@ -8,7 +8,7 @@ import flixel.addons.display.FlxTiledSprite;
 
 import substates.GameOverSubstate;
 import states.stages.objects.*;
-import objects.Note;
+import objects.notes.Note;
 
 class PhillyBlazin extends BaseStage
 {

@@ -1,4 +1,4 @@
-package objects;
+package objects.notes;
 
 import backend.animation.PsychAnimationController;
 
@@ -40,7 +40,6 @@ class NoteSplash extends FlxSprite
 
 		animation = new PsychAnimationController(this);
 
-		trace('created splash');
 		loadSplash(splash);
 	}
 

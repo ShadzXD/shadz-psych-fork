@@ -23,8 +23,8 @@ import sys.thread.Thread;
 import sys.thread.Mutex;
 #end
 
-import objects.Note;
-import objects.NoteSplash;
+import objects.notes.Note;
+import objects.notes.NoteSplash;
 
 #if HSCRIPT_ALLOWED
 import psychlua.HScript;
@@ -138,8 +138,7 @@ class LoadingState extends MusicBeatState
 		bg.screenCenter();
 		addBehindBar(bg);
 
-		funkay = new FlxSprite(0, 0).loadGraphic(Paths.image('funkay'));
-		funkay.antialiasing = ClientPrefs.data.antialiasing;
+		funkay = new FlxSprite(0, 0).loadGraphic(Paths.image('menus/loading/funkay'));
 		funkay.setGraphicSize(0, FlxG.height);
 		funkay.updateHitbox();
 		addBehindBar(funkay);

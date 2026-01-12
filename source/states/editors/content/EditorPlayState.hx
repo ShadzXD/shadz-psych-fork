@@ -3,9 +3,9 @@ package states.editors.content;
 import backend.Song;
 import backend.Rating;
 
-import objects.Note;
-import objects.NoteSplash;
-import objects.StrumNote;
+import objects.notes.Note;
+import objects.notes.NoteSplash;
+import objects.notes.StrumNote;
 
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;

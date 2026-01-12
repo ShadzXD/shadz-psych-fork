@@ -1,6 +1,6 @@
 package states.editors.content;
 
-import objects.Note;
+import objects.notes.Note;
 import flixel.util.FlxDestroyUtil;
 
 class MetaNote extends Note
@@ -141,7 +141,7 @@ class EventMetaNote extends MetaNote
 		events = eventData[1];
 		//trace('events: $events');
 		
-		loadGraphic(Paths.image('editors/eventIcon'));
+		loadGraphic(Paths.image('menus/editors/eventIcon'));
 		setGraphicSize(ChartingState.GRID_SIZE);
 		updateHitbox();
 

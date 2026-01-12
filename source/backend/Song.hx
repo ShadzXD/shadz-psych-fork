@@ -3,7 +3,7 @@ package backend;
 import haxe.Json;
 import lime.utils.Assets;
 
-import objects.Note;
+import objects.notes.Note;
 
 typedef SwagSong =
 {

@@ -36,8 +36,10 @@ import openfl.filters.ShaderFilter;
 import shaders.ErrorHandledShader;
 
 import objects.VideoSprite;
-import objects.Note.EventNote;
+import objects.notes.Note.EventNote;
 import objects.*;
+import objects.notes.*;
+
 import states.stages.*;
 import states.stages.objects.*;
 import objects.huds.*;
@@ -1159,7 +1161,9 @@ class PlayState extends MusicBeatState
 	private var noteTypes:Array<String> = [];
 	private var eventsPushed:Array<String> = [];
 	private var totalColumns: Int = 4;
-
+	/**
+	 * Loads Song Data.
+	 */
 	private function generateSong():Void
 	{
 		// FlxG.log.add(ChartParser.parse());
@@ -1274,10 +1278,16 @@ class PlayState extends MusicBeatState
 				unspawnNotes.push(swagNote);
 
 				var curStepCrochet:Float = 60 / daBpm * 1000 / 4.0;
-				final roundSus:Int = Math.round(swagNote.sustainLength / curStepCrochet);
-				if(roundSus > 0)
+				final ROUNDED_SUSTAIN_LENGTH:Int = Math.round(swagNote.sustainLength / curStepCrochet);
+				/**
+				 * Changed this from 0 to 1.
+				 * This means that super small sustains no longer load in playstate,
+				 * but are still visible in the chart editor.
+				 * If you want to re-add them back, change the 1 to 0
+				 */
+				if(ROUNDED_SUSTAIN_LENGTH > 1)
 				{
-					for (susNote in 0...roundSus)
+					for (susNote in 0...ROUNDED_SUSTAIN_LENGTH)
 					{
 						oldNote = unspawnNotes[Std.int(unspawnNotes.length - 1)];
 
@@ -3342,7 +3352,7 @@ class PlayState extends MusicBeatState
 	}
 	public function checkBotplay(badHit:Bool = false)
 	{
-		if(!cpuControlled) hudClass.updateScore(badHit, songScore, songMisses, ratingPercent); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
+		if(!ClientPrefs.getGameplaySetting('botplay')) hudClass.updateScore(badHit, songScore, songMisses, ratingPercent); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
 		else hudClass.botplayStuff();
 	}
 	#if ACHIEVEMENTS_ALLOWED
