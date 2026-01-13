@@ -2,7 +2,7 @@ package states.editors.content;
 
 import objects.notes.Note;
 import flixel.util.FlxDestroyUtil;
-
+import shaders.RGBPalette.RGBShaderReference;
 class MetaNote extends Note
 {
 	public static var noteTypeTexts:Map<Int, FlxText> = [];
@@ -31,6 +31,9 @@ class MetaNote extends Note
 			loadNoteAnims();
 		else
 			loadPixelNoteAnims();
+
+		if(Note.globalRgbShaders.contains(rgbShader.parent)) //Is using a default shader
+			rgbShader = new RGBShaderReference(this, Note.initializeGlobalRGBShader(noteData));
 
 		animation.play(Note.colArray[this.noteData % Note.colArray.length] + 'Scroll');
 		updateHitbox();

@@ -3,6 +3,8 @@ package objects.notes;
 import backend.animation.PsychAnimationController;
 import backend.NoteTypesConfig;
 
+import shaders.RGBPalette;
+import shaders.RGBPalette.RGBShaderReference;
 
 import objects.notes.StrumNote;
 
@@ -21,7 +23,11 @@ typedef NoteSplashData = {
 	disabled:Bool,
 	texture:String,
 	useGlobalShader:Bool, //breaks r/g/b but makes it copy default colors for your custom note
+	useRGBShader:Bool,
 	antialiasing:Bool,
+	r:FlxColor,
+	g:FlxColor,
+	b:FlxColor,
 	a:Float
 }
 
@@ -77,6 +83,8 @@ class Note extends FlxSprite
 	public var eventVal1:String = '';
 	public var eventVal2:String = '';
 
+	public var rgbShader:RGBShaderReference;
+	public static var globalRgbShaders:Array<RGBPalette> = [];
 	public var inEditor:Bool = false;
 
 	public var animSuffix:String = '';
@@ -95,6 +103,10 @@ class Note extends FlxSprite
 		texture: null,
 		antialiasing: !PlayState.isPixelStage,
 		useGlobalShader: false,
+		useRGBShader: (PlayState.SONG != null) ? !(PlayState.SONG.disableNoteRGB == true) : true,
+		r: -1,
+		g: -1,
+		b: -1,
 		a: ClientPrefs.data.noteSplashAlpha
 	};
 
@@ -159,9 +171,28 @@ class Note extends FlxSprite
 		return value;
 	}
 
+	public function defaultRGB()
+	{
+		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[noteData];
+		if(PlayState.isPixelStage) arr = ClientPrefs.data.arrowRGBPixel[noteData];
+
+		if (arr != null && noteData > -1 && noteData <= arr.length)
+		{
+			rgbShader.r = arr[0];
+			rgbShader.g = arr[1];
+			rgbShader.b = arr[2];
+		}
+		else
+		{
+			rgbShader.r = 0xFFFF0000;
+			rgbShader.g = 0xFF00FF00;
+			rgbShader.b = 0xFF0000FF;
+		}
+	}
 
 	private function set_noteType(value:String):String {
 		noteSplashData.texture = PlayState.SONG != null ? PlayState.SONG.splashSkin : 'noteSplashes/noteSplashes';
+		defaultRGB();
 
 		if(noteData > -1 && noteType != value) {
 			switch(value) {
@@ -170,7 +201,15 @@ class Note extends FlxSprite
 					//reloadNote('HURTNOTE_assets');
 					//this used to change the note texture to HURTNOTE_assets.png,
 					//but i've changed it to something more optimized with the implementation of RGBPalette:
+
+					// note colors
+					rgbShader.r = 0xFF101010;
+					rgbShader.g = 0xFFFF0000;
+					rgbShader.b = 0xFF990022;
+
 					// splash data and colors
+					noteSplashData.r = 0xFFFF0000;
+					noteSplashData.g = 0xFF101010;
 					noteSplashData.texture = 'noteSplashes/noteSplashes-electric';
 
 					// gameplay data
@@ -200,6 +239,7 @@ class Note extends FlxSprite
 
 		animation = new PsychAnimationController(this);
 
+		antialiasing = ClientPrefs.data.antialiasing;
 		if(createdFrom == null) createdFrom = PlayState.instance;
 
 		if (prevNote == null)
@@ -220,6 +260,8 @@ class Note extends FlxSprite
 
 		if(noteData > -1)
 		{
+			rgbShader = new RGBShaderReference(this, initializeGlobalRGBShader(noteData));
+			if(PlayState.SONG != null && PlayState.SONG.disableNoteRGB) rgbShader.enabled = false;
 			texture = '';
 
 			x += swagWidth * (noteData);
@@ -237,13 +279,14 @@ class Note extends FlxSprite
 
 		if (isSustainNote && prevNote != null)
 		{
-			alpha = 1;
-			multAlpha = 1;
+			alpha = 0.6;
+			multAlpha = 0.6;
 			hitsoundDisabled = true;
 			if(ClientPrefs.data.downScroll) flipY = true;
-			scale.y = 0.7;
+
 			offsetX += width / 2;
 			copyAngle = false;
+
 			animation.play(colArray[noteData % colArray.length] + 'holdend');
 
 			updateHitbox();
@@ -257,11 +300,11 @@ class Note extends FlxSprite
 			{
 				prevNote.animation.play(colArray[prevNote.noteData % colArray.length] + 'hold');
 
-				prevNote.scale.y = Conductor.stepCrochet / 100 * 1.03;
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
 				if(createdFrom != null && createdFrom.songSpeed != null) prevNote.scale.y *= createdFrom.songSpeed;
 
 				if(PlayState.isPixelStage) {
-					prevNote.scale.y *= 4.58;
+					prevNote.scale.y *= 1.19;
 					prevNote.scale.y *= (6 / height); //Auto adjust note size
 				}
 				prevNote.updateHitbox();
@@ -283,6 +326,30 @@ class Note extends FlxSprite
 		x += offsetX;
 	}
 
+	public static function initializeGlobalRGBShader(noteData:Int)
+	{
+		if(globalRgbShaders[noteData] == null)
+		{
+			var newRGB:RGBPalette = new RGBPalette();
+			var arr:Array<FlxColor> = (!PlayState.isPixelStage) ? ClientPrefs.data.arrowRGB[noteData] : ClientPrefs.data.arrowRGBPixel[noteData];
+			
+			if (arr != null && noteData > -1 && noteData <= arr.length)
+			{
+				newRGB.r = arr[0];
+				newRGB.g = arr[1];
+				newRGB.b = arr[2];
+			}
+			else
+			{
+				newRGB.r = 0xFFFF0000;
+				newRGB.g = 0xFF00FF00;
+				newRGB.b = 0xFF0000FF;
+			}
+			
+			globalRgbShaders[noteData] = newRGB;
+		}
+		return globalRgbShaders[noteData];
+	}
 
 	var _lastNoteOffX:Float = 0;
 	static var _lastValidChecked:String; //optimization
@@ -299,6 +366,7 @@ class Note extends FlxSprite
 			if(skin == null || skin.length < 1)
 				skin = defaultNoteSkin + postfix;
 		}
+		else rgbShader.enabled = false;
 
 		var animName:String = null;
 		if(animation.curAnim != null) {
@@ -357,6 +425,8 @@ class Note extends FlxSprite
 	public static function getNoteSkinPostfix()
 	{
 		var skin:String = '';
+		if(ClientPrefs.data.noteSkin != ClientPrefs.defaultData.noteSkin)
+			skin = '-' + ClientPrefs.data.noteSkin.trim().toLowerCase().replace(' ', '_');
 		return skin;
 	}
 
