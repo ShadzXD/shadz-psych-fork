@@ -426,8 +426,6 @@ class Note extends FlxSprite
 	public static function getNoteSkinPostfix()
 	{
 		var skin:String = '';
-		if(ClientPrefs.data.noteSkin != ClientPrefs.defaultData.noteSkin)
-			skin = '-' + ClientPrefs.data.noteSkin.trim().toLowerCase().replace(' ', '_');
 		return skin;
 	}
 
