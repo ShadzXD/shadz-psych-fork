@@ -266,6 +266,7 @@ class PlayState extends MusicBeatState
 	 * Mainly tied to the hudclass, just in case you want to use your own spin on stuff.
 	 */
 	var useHealth:Bool = true;
+	
 	override public function create()
 	{
 		//trace('Playback Rate: ' + playbackRate);
