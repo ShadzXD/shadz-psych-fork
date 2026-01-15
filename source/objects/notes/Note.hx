@@ -302,7 +302,7 @@ class Note extends FlxSprite
 			{
 				prevNote.animation.play(colArray[prevNote.noteData % colArray.length] + 'hold');
 
-				prevNote.scale.y = Conductor.stepCrochet / 100 * 1.049;
+				prevNote.scale.y = Conductor.stepCrochet / 100 * 1.048;
 				if(createdFrom != null && createdFrom.songSpeed != null) prevNote.scale.y *= createdFrom.songSpeed;
 
 				if(PlayState.isPixelStage) {

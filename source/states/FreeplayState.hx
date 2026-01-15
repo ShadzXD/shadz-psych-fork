@@ -242,7 +242,7 @@ class FreeplayState extends MusicBeatState
 
 		if (!player.playingMusic)
 		{
-			scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' ' +  ratingSplit.join('.') + '%';
+			scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' +  ratingSplit.join('.') + '%)';
 			positionHighscore();
 			
 			if(songs.length > 1)
