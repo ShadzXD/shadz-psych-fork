@@ -291,6 +291,7 @@ class Note extends FlxSprite
 			animation.play(colArray[noteData % colArray.length] + 'holdend');
 
 			updateHitbox();
+			centerOffsets();
 
 			offsetX -= width / 2;
 
