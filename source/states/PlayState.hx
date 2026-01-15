@@ -1144,7 +1144,7 @@ class PlayState extends MusicBeatState
 		hudClass.startSong();
 		#if DISCORD_ALLOWED
 		// Updating Discord Rich Presence (with Time Left)
-		if(autoUpdateRPC) DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter(), true, songLength);
+		if(autoUpdateRPC) DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass?.iconP2?.getCharacter(), true, songLength);
 		#end
 		setOnScripts('songLength', songLength);
 		callOnScripts('onSongStart');
@@ -1513,7 +1513,7 @@ class PlayState extends MusicBeatState
 		super.onFocusLost();
 		if (!paused && health > 0 && autoUpdateRPC)
 		{
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
+			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", hudClass?.iconP2?.getCharacter());
 		}
 	}
 	#end
@@ -1526,9 +1526,9 @@ class PlayState extends MusicBeatState
 		if(!autoUpdateRPC) return;
 
 		if (showTime)
-			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.data.noteOffset);
+			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass?.iconP2?.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.data.noteOffset);
 		else
-			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
+			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass?.iconP2?.getCharacter());
 		#end
 	}
 
@@ -1583,7 +1583,6 @@ class PlayState extends MusicBeatState
 
 		setOnScripts('curDecStep', curDecStep);
 		setOnScripts('curDecBeat', curDecBeat);
-
 		if(botplayTxt != null && botplayTxt.visible) {
 			botplaySine += 180 * elapsed;
 			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
@@ -1790,7 +1789,7 @@ class PlayState extends MusicBeatState
 		openSubState(new PauseSubState());
 
 		#if DISCORD_ALLOWED
-		if(autoUpdateRPC) DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
+		if(autoUpdateRPC) DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", hudClass?.iconP2?.getCharacter());
 		#end
 	}
 
@@ -1887,7 +1886,7 @@ class PlayState extends MusicBeatState
 
 				#if DISCORD_ALLOWED
 				// Game Over doesn't get his its variable because it's only used here
-				if(autoUpdateRPC) DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass.iconP2.getCharacter());
+				if(autoUpdateRPC) DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", hudClass?.iconP2?.getCharacter());
 				#end
 				isDead = true;
 				return true;
@@ -2064,8 +2063,7 @@ class PlayState extends MusicBeatState
 							boyfriend.alpha = 0.00001;
 							boyfriend = boyfriendMap.get(value2);
 							boyfriend.alpha = lastAlpha;
-							if(hudClass.iconP1 != null)
-							hudClass.iconP1.changeIcon(boyfriend.healthIcon);
+							hudClass?.iconP1?.changeIcon(boyfriend.healthIcon);
 						}
 						setOnScripts('boyfriendName', boyfriend.curCharacter);
 
@@ -2087,8 +2085,7 @@ class PlayState extends MusicBeatState
 								gf.visible = false;
 							}
 							dad.alpha = lastAlpha;
-							if(hudClass.iconP2 != null)
-							hudClass.iconP2.changeIcon(dad.healthIcon);
+							hudClass?.iconP2?.changeIcon(dad.healthIcon);
 						}
 						setOnScripts('dadName', dad.curCharacter);
 

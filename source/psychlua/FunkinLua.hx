@@ -42,7 +42,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.input.gamepad.FlxGamepadInputID;
 
 import haxe.Json;
-
+import objects.huds.MainHUD;
 class FunkinLua {
 	public var lua:State = null;
 	public var camTarget:FlxCamera;
@@ -196,6 +196,8 @@ class FunkinLua {
 		set('shadersEnabled', ClientPrefs.data.shaders);
 		set('scriptName', scriptName);
 		set('currentModDirectory', Mods.currentModDirectory);
+		//set('iconP1', MainHUD.instance.iconP1);
+		//set('iconP2', MainHUD.instance.iconP2);
 
 		// Noteskin/Splash
 		set('noteSkinPostfix', Note.getNoteSkinPostfix());

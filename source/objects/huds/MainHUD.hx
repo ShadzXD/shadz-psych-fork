@@ -27,6 +27,7 @@ class MainHUD extends FlxGroup
 	public var useHealth:Bool = true;
 	//GROUP THE ICONS!
 	public var iconGroup:FlxTypedGroup<HealthIcon>;
+	public static var instance:MainHUD;
 
 	public var ratingStuff:Array<Dynamic> = [
 		['You Suck!', 0.2], //From 0% to 19%
@@ -42,6 +43,8 @@ class MainHUD extends FlxGroup
 	];
 	public function new()
 	{
+				instance = this;
+
 		super();
 	}
 
@@ -52,6 +55,7 @@ class MainHUD extends FlxGroup
 	public function botplayStuff(){} 
 
 	public function reloadHealthBarColors() {
+		if(healthBar == null) return;
 		healthBar.setColors(FlxColor.fromRGB(PlayState.instance.dad.healthColorArray[0], PlayState.instance.dad.healthColorArray[1], PlayState.instance.dad.healthColorArray[2]),
 			FlxColor.fromRGB(PlayState.instance.boyfriend.healthColorArray[0], PlayState.instance.boyfriend.healthColorArray[1], PlayState.instance.boyfriend.healthColorArray[2]));
 	}
