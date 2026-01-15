@@ -1,6 +1,7 @@
 package states.editors.content;
 
 import objects.notes.Note;
+import shaders.RGBPalette;
 import flixel.util.FlxDestroyUtil;
 import openfl.utils.Assets;
 
