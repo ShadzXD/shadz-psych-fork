@@ -2,7 +2,8 @@ package states.editors.content;
 
 import objects.notes.Note;
 import flixel.util.FlxDestroyUtil;
-import shaders.RGBPalette.RGBShaderReference;
+import openfl.utils.Assets;
+
 class MetaNote extends Note
 {
 	public static var noteTypeTexts:Map<Int, FlxText> = [];
@@ -62,7 +63,7 @@ class MetaNote extends Note
 		{
 			if(sustainSprite == null)
 			{
-				sustainSprite = new FlxSprite().makeGraphic(1, 1, FlxColor.WHITE);
+				sustainSprite = new FlxSprite().makeGraphic(1, 1, getNoteColor());
 				sustainSprite.scrollFactor.x = 0;
 			}
 			sustainSprite.setGraphicSize(8, Math.max(ChartingState.GRID_SIZE/4, (Math.round((v * ChartingState.GRID_SIZE + ChartingState.GRID_SIZE) / stepCrochet) * zoom) - ChartingState.GRID_SIZE/2));
@@ -132,18 +133,23 @@ class MetaNote extends Note
 		sustainSprite = FlxDestroyUtil.destroy(sustainSprite);
 		super.destroy();
 	}
+
+	inline function getNoteColor():FlxColor
+		return ClientPrefs.data.arrowRGB[chartNoteData][0];
+	
+
 }
 
 class EventMetaNote extends MetaNote
 {
 	public var eventText:FlxText;
+	var eventNameStr:String;
 	public function new(time:Float, eventData:Dynamic)
 	{
 		super(time, -1, eventData);
 		this.isEvent = true;
 		events = eventData[1];
-		//trace('events: $events');
-		
+
 		loadGraphic(Paths.image('menus/editors/eventIcon'));
 		setGraphicSize(ChartingState.GRID_SIZE);
 		updateHitbox();
@@ -153,7 +159,7 @@ class EventMetaNote extends MetaNote
 		eventText.scrollFactor.x = 0;
 		updateEventText();
 	}
-	
+
 	override function draw()
 	{
 		if(eventText != null && eventText.exists && eventText.visible)

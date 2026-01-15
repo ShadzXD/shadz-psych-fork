@@ -43,13 +43,13 @@ class SustainSplash extends FlxSprite {
   
     clipRect = new flixel.math.FlxRect(0, !PlayState.isPixelStage ? 0 : -210, frameWidth, frameHeight);
 
-    if (daNote.shader != null) {
       shader = new objects.notes.NoteSplash.PixelSplashShaderRef().shader;
       shader.data.r.value = daNote.shader.data.r.value;
       shader.data.g.value = daNote.shader.data.g.value;
       shader.data.b.value = daNote.shader.data.b.value;
       shader.data.mult.value = daNote.shader.data.mult.value;
-    }
+    
+    trace(shader);
     visible = true;
     strumNote = strum;
 

@@ -421,7 +421,6 @@ class NoteSplash extends FlxSprite
 		return maxAnims = value;
 	}
 }
-
 class PixelSplashShaderRef 
 {
 	public var shader:PixelSplashShader = new PixelSplashShader();

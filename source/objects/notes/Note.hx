@@ -283,7 +283,7 @@ class Note extends FlxSprite
 			multAlpha = 1;
 			hitsoundDisabled = true;
 			if(ClientPrefs.data.downScroll) flipY = true;
-			scale.y = 0.7;
+			scale.y = 0.74;
 
 			offsetX += width / 2;
 			copyAngle = false;
