@@ -1073,9 +1073,9 @@ class PlayState extends MusicBeatState
 		if (ret == LuaUtils.Function_Stop)
 			return;
 
-		//if (!miss && !cpuControlled && scoreBop)
-		//	doScoreBop();
-
+		if (scoreBop && ClientPrefs.data.scoreZoom) hudClass.doScoreBop();
+		
+		hudClass.updateScore(miss, songScore, songMisses, ratingPercent);
 		callOnScripts('onUpdateScore', [miss]);
 	}
 
@@ -3290,7 +3290,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	public var ratingName:String = '?';
 	public var ratingPercent:Float;
 	public var ratingFC:String;
 	public function RecalculateRating(badHit:Bool = false, scoreBop:Bool = true) {
@@ -3310,16 +3309,14 @@ class PlayState extends MusicBeatState
 			}
 		}
 		setOnScripts('rating', ratingPercent);
-		setOnScripts('ratingName', ratingName);
 		setOnScripts('ratingFC', ratingFC);
 		setOnScripts('totalPlayed', totalPlayed);
 		setOnScripts('totalNotesHit', totalNotesHit);
-		if(ClientPrefs.data.scoreZoom && !badHit)hudClass.doScoreBop();
 		checkBotplay(badHit);
 	}
 	public function checkBotplay(badHit:Bool = false)
 	{
-		if(!ClientPrefs.getGameplaySetting('botplay')) hudClass.updateScore(badHit, songScore, songMisses, ratingPercent); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
+		if(!ClientPrefs.getGameplaySetting('botplay')) updateScore(badHit, !badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
 		else hudClass.botplayStuff();
 	}
 	#if ACHIEVEMENTS_ALLOWED
