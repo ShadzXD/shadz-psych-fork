@@ -58,8 +58,8 @@ class AchievementPopup extends openfl.display.Sprite {
 		var desc:String = 'Description not found';
 		if(achievement != null)
 		{
-			if(achievement.name != null) name = 'achievement_$achieve';
-			if(achievement.description != null)  desc = 'description_$achieve';
+			if(achievement.name != null) name = achievement.name;
+			if(achievement.description != null)  desc = achievement.description;
 		}
 
 		var textX = sizeX + imgX + 15;
