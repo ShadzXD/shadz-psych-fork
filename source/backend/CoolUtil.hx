@@ -154,4 +154,13 @@ class CoolUtil
 				text.borderStyle = NONE;
 		}
 	}
+		inline static public function coolLerp(base:Float, target:Float, ratio:Float):Float
+	{
+		return base + cameraLerp(ratio) * (target - base);
+	}
+
+	inline static public function cameraLerp(lerp:Float):Float
+	{
+		return lerp * (FlxG.elapsed / 0.016666666666666666);
+	}
 }

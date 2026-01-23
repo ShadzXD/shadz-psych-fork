@@ -208,6 +208,7 @@ class PlayState extends MusicBeatState
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
+	public var ratingName:String = '?';
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;

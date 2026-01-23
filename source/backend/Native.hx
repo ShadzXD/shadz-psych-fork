@@ -3,7 +3,6 @@ package backend;
 import lime.app.Application;
 import lime.system.Display;
 import lime.system.System;
-
 import flixel.util.FlxColor;
 
 #if (cpp && windows)
@@ -65,11 +64,11 @@ class Native
 	public static function registerDPIAware():Void
 	{
 		#if (cpp && windows)
-		// DPI Scaling fix for windows 
+		// DPI Scaling fix for windows
 		// this shouldn't be needed for other systems
 		// Credit to YoshiCrafter29 for finding this function
 		untyped __cpp__('
-			SetProcessDPIAware();	
+			SetProcessDPIAware();
 			#ifdef DPI_AWARENESS_CONTEXT
 			SetProcessDpiAwarenessContext(
 				#ifdef DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2
@@ -83,41 +82,10 @@ class Native
 		#end
 	}
 
-	private static var fixedScaling:Bool = false;
-	public static function fixScaling():Void
-	{
-		if (fixedScaling) return;
-		fixedScaling = true;
-
-		#if (cpp && windows)
-		final display:Null<Display> = System.getDisplay(0);
-		if (display != null)
-		{
-			final dpiScale:Float = display.dpi / 96;
-			@:privateAccess Application.current.window.width = Std.int(Main.game.width * dpiScale);
-			@:privateAccess Application.current.window.height = Std.int(Main.game.height * dpiScale);
-
-			Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
-			Application.current.window.y = Std.int((Application.current.window.display.bounds.height - Application.current.window.height) / 2);
-		}
-
-		untyped __cpp__('
-			getHandle();
-			if (curHandle != (HWND)0) {
-				HDC curHDC = GetDC(curHandle);
-				RECT curRect;
-				GetClientRect(curHandle, &curRect);
-				FillRect(curHDC, &curRect, (HBRUSH)GetStockObject(BLACK_BRUSH));
-				ReleaseDC(curHandle, curHDC);
-			}
-		');
-		#end
-	}
-
 	/**
 	 * Enables or disables dark mode support for the title bar.
 	 * Only works on Windows.
-	 * 
+	 *
 	 * @param enable Whether to enable or disable dark mode support.
 	 * @param instant Whether to skip the transition tween.
 	 */
@@ -154,6 +122,7 @@ class Native
 	 * Only works on Windows.
 	 */
 	public static var windowBarColor(default, set):Null<FlxColor> = null;
+
 	public static function set_windowBarColor(value:Null<FlxColor>):Null<FlxColor>
 	{
 		#if (cpp && windows)
@@ -176,6 +145,7 @@ class Native
 	 * Only works on Windows.
 	 */
 	public static var windowTextColor(default, set):Null<FlxColor> = null;
+
 	public static function set_windowTextColor(value:Null<FlxColor>):Null<FlxColor>
 	{
 		#if (cpp && windows)
@@ -198,6 +168,7 @@ class Native
 	 * Only works on Windows.
 	 */
 	public static var windowBorderColor(default, set):Null<FlxColor> = null;
+
 	public static function set_windowBorderColor(value:Null<FlxColor>):Null<FlxColor>
 	{
 		#if (cpp && windows)
