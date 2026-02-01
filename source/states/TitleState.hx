@@ -72,7 +72,7 @@ class TitleState extends MusicBeatState
 
 		Conductor.bpm = musicBPM;
 
-		logoBl = new FlxSprite(logoPosition.x, logoPosition.y);
+		logoBl = new FlxSprite(-150, -100);
 		logoBl.frames = Paths.getSparrowAtlas('menus/logoBumpin');
 
 		logoBl.animation.addByPrefix('bump', 'logo bumpin', 24, false);
@@ -103,7 +103,7 @@ class TitleState extends MusicBeatState
 
 
 		var animFrames:Array<FlxFrame> = [];
-		titleText = new FlxSprite(enterPosition.x, enterPosition.y);
+		titleText = new FlxSprite(100, 576);
 		titleText.frames = Paths.getSparrowAtlas('menus/title/titleEnter');
 		@:privateAccess
 		{
@@ -151,12 +151,7 @@ class TitleState extends MusicBeatState
 			initialized = true;
 
 		// credGroup.add(credTextShit);
-	}
-
-
-	var logoPosition:FlxPoint = FlxPoint.get(-150, -100);
-	var enterPosition:FlxPoint = FlxPoint.get(100, 576);
-	
+	}	
 	var useIdle:Bool = false;
 	var musicBPM:Float = 102;
 	var danceLeftFrames:Array<Int> = [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
@@ -221,8 +216,6 @@ class TitleState extends MusicBeatState
 			titleTimer += FlxMath.bound(elapsed, 0, 1);
 			if (titleTimer > 2) titleTimer -= 2;
 		}
-
-		// EASTER EGG
 
 		if (initialized && !transitioning && skippedIntro)
 		{
