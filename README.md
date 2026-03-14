@@ -19,5 +19,3 @@ I don't recommend using this fork as of now since its relatively buggy and unfin
 Contributors:
 
 [superInky](https://x.com/superinky_) - Fixed UpdateScore() function not being called on LUA.
-[Furo](https://x.com/furoyt_) - Stylecheck Implementation & Fixes to broken Strings.
-
