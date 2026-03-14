@@ -1,16 +1,17 @@
-My Psych Engine v1.0.4 Maintenance Fork.
+My Psych Engine v1.0.4 Fork.
 
-Fork used for [Super Funkin' Galaxy](https://gamebanana.com/mods/444759) & VS Oshawott: Funkin' Beynd.
+Fork used for [Super Funkin' Galaxy](https://gamebanana.com/mods/444759) & VS Oshawott: Funkin' Beyond (unreleased as of now).
 
 Features as of now:
-
-- Moves texture-atlas library to flixel animate.
-- Multiple Fixes to Sustains 
+- Updates texture-atlas library to flixel animate.
+- More modern looking Sustains
 - Removal of Language Support.
 - Removal of Title JSON.
 - Bug fixes.
-- Updates all libraries.
-- Moves HUD to its own class.
+- Most libraries have been updated to newer verseions.
+- Moved HUD to its own class.
+- Features that modernize engine for modding.
+- Reorganized files
 
 I don't recommend using this fork as of now since its relatively buggy and unfinished.
 
