@@ -4,6 +4,7 @@ Fork used for [Super Funkin' Galaxy](https://gamebanana.com/mods/444759) & VS Os
 
 Features as of now:
 - Updates texture-atlas library to flixel animate.
+- Lower RAM usage + General Optimizations.
 - More modern looking Sustains
 - Removal of Language Support.
 - Removal of Title JSON.
@@ -11,7 +12,7 @@ Features as of now:
 - Most libraries have been updated to newer verseions.
 - Moved HUD to its own class.
 - Features that modernize engine for modding.
-- Reorganized files
+- Reorganized image files.
 
 I don't recommend using this fork as of now since its relatively buggy and unfinished.
 
