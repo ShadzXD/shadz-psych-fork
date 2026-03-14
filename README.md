@@ -1,6 +1,6 @@
 My Psych Engine v1.0.4 Fork.
 
-Fork used for [Super Funkin' Galaxy](https://gamebanana.com/mods/444759) & VS Oshawott: Funkin' Beyond (unreleased as of now).
+Fork used for [Super Funkin' Galaxy](https://gamebanana.com/mods/444759) (next update) & VS Oshawott: Funkin' Beyond (next update).
 
 Features as of now:
 - Updates texture-atlas library to flixel animate.
