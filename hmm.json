@@ -78,6 +78,11 @@
 			"type": "haxelib",
 			"version": "9.5.0"
 		},
+    {
+			"name": "tjson",
+			"type": "haxelib",
+			"version": "1.4.0"
+		},
 		{
 			"name": "tink_core",
 			"type": "haxelib",
