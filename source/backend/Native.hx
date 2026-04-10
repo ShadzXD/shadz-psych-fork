@@ -185,4 +185,37 @@ class Native
 
 		return windowBorderColor = value;
 	}
+
+	private static var fixedScaling:Bool = false;
+
+	public static function fixScaling():Void
+	{
+		if (fixedScaling)
+			return;
+		fixedScaling = true;
+
+		#if (cpp && windows)
+		final display:Null<Display> = System.getDisplay(0);
+		if (display != null)
+		{
+			final dpiScale:Float = display.dpi / 96;
+			@:privateAccess Application.current.window.width = Std.int(Main.game.width * dpiScale);
+			@:privateAccess Application.current.window.height = Std.int(Main.game.height * dpiScale);
+
+			Application.current.window.x = Std.int((Application.current.window.display.bounds.width - Application.current.window.width) / 2);
+			Application.current.window.y = Std.int((Application.current.window.display.bounds.height - Application.current.window.height) / 2);
+		}
+
+		untyped __cpp__('
+			getHandle();
+			if (curHandle != (HWND)0) {
+				HDC curHDC = GetDC(curHandle);
+				RECT curRect;
+				GetClientRect(curHandle, &curRect);
+				FillRect(curHDC, &curRect, (HBRUSH)GetStockObject(BLACK_BRUSH));
+				ReleaseDC(curHandle, curHDC);
+			}
+		');
+		#end
+	}
 }

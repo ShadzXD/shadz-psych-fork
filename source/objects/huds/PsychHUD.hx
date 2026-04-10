@@ -19,21 +19,36 @@ class PsychHUD extends MainHUD
 	final LOSING_ICON_VALUE = 1;
 	final ALLY_ICON_OFFSET = 60;
 	final ENEMY_ICON_OFFSET = 40;
+	var timeBar:Bar;
 
 	public function new()
 	{
 		super();
-		timeTxt = new FlxText(PlayState.STRUM_X + (FlxG.width / 2) - 248, ClientPrefs.data.downScroll ? FlxG.height - 44 : 24, 400, "", 27);
+		var showTime:Bool = (ClientPrefs.data.timeBarType != 'Disabled');
+
+		timeTxt = new FlxText(PlayState.STRUM_X + (FlxG.width / 2) - 248, ClientPrefs.data.downScroll ? FlxG.height - 44 : 17, 400, "", 27);
 		timeTxt.setFormat(Paths.font(hudFont), 27, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		timeTxt.alpha = 0;
+		timeTxt.visible = showTime;
 		if (ClientPrefs.data.timeBarType == 'Song Name')
-			timeTxt.text = PlayState.instance.songName;
+			timeTxt.text = PlayState.SONG.song;
 		timeTxt.borderSize = 1.25;
+		timeBar = new Bar(0, timeTxt.y + (timeTxt.height / 4), 'timeBar', function() return PlayState.instance.songPercent, 0, 1);
+		timeBar.scrollFactor.set();
+		timeBar.screenCenter(X);
+		timeBar.alpha = 0;
+		timeBar.visible = showTime;
+		add(timeBar);
 		add(timeTxt);
+		if (ClientPrefs.data.timeBarType == 'Song Name')
+		{
+			timeTxt.size = 24;
+			timeTxt.y += 3;
+		}
 
 		final lerpValue:Float = 0.12 / (ClientPrefs.data.framerate / 60);
-		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.06), 'healthBar', function()
+		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.08), 'healthBar', function()
 		{
 			healthLerp = FlxMath.lerp(healthLerp, PlayState.instance.get_health(), lerpValue);
 			return healthLerp;
@@ -73,6 +88,9 @@ class PsychHUD extends MainHUD
 		healthBar.percent = (newPercent != null ? newPercent : 0);
 		for (obj in iconGroup)
 		{
+			var mult:Float = FlxMath.lerp(1, iconP1.scale.x, Math.exp(-elapsed * 5));
+			obj.scale.set(mult, mult);
+			obj.updateHitbox();
 			if (obj.isPlayer)
 			{
 				obj.x = (healthBar.barCenter + (150 * obj.scale.x - 150) / 2 - (obj.isAlly ? iconOffset - ALLY_ICON_OFFSET : iconOffset));
@@ -150,5 +168,6 @@ class PsychHUD extends MainHUD
 	override function startSong()
 	{
 		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
+		FlxTween.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 	}
 }

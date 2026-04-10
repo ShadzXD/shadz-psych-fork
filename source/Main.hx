@@ -43,7 +43,7 @@ import flixel.system.FlxAssets;
 // // // // // // // // //
 class Main extends Sprite
 {
-	var game = {
+	public static final game = {
 		width: 1280, // WINDOW width
 		height: 720, // WINDOW height
 		initialState: TitleState, // initial game state
@@ -64,6 +64,10 @@ class Main extends Sprite
 	public function new()
 	{
 		super();
+
+		#if (cpp && windows)
+		backend.Native.fixScaling();
+		#end
 
 		// FlxAssets.FONT_DEFAULT = Paths.font("vcr.ttf");
 		// Credits to MAJigsaw77 (he's the og author for this code)
@@ -106,7 +110,6 @@ class Main extends Sprite
 		#end
 		Mods.loadTopMod();
 
-		
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 		Highscore.load();
 
@@ -187,18 +190,11 @@ class Main extends Sprite
 		var gameObj = new FlxGame(game.width, game.height, game.initialState, game.framerate, game.framerate, game.skipSplash, game.startFullscreen);
 
 		@:privateAccess
-		//gameObj._customSoundTray = objects.FunkinSoundTray;
+		gameObj._customSoundTray = objects.FunkinSoundTray;
 		addChild(gameObj);
-		#if !mobile
-		fpsVar = new FPSCounter(5, 3, 0xFFFFFF);
-		addChild(fpsVar);
+
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if (fpsVar != null)
-		{
-			fpsVar.visible = ClientPrefs.data.showFPS;
-		}
-		#end
 
 		#if (linux || mac) // fix the app icon not showing up on the Linux Panel / Mac Dock
 		var icon = Image.fromFile("icon.png");
@@ -244,6 +240,24 @@ class Main extends Sprite
 				FlxG.fullscreen = !FlxG.fullscreen;
 		});
 
+		// fps counter is created on the fly if f3 is pressed, for the first time.
+		// doing this because the fps counter is a known source for (some small) mem leaks,
+		// best to avoid it for people not using it
+		FlxG.stage.addEventListener(openfl.events.KeyboardEvent.KEY_DOWN, (e) ->
+		{
+			if (e.keyCode == FlxKey.F3)
+			{
+				if (fpsVar != null)
+					fpsVar.visible = !fpsVar.visible;
+				if (fpsVar == null)
+				{
+					fpsVar = new FPSCounter(5, 3, 0xFFFFFF);
+					addChild(fpsVar);
+					fpsVar.visible = true;
+					trace('init fps counter');
+				}
+			}
+		});
 	}
 
 	static function resetSpriteCache(sprite:Sprite):Void

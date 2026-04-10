@@ -92,7 +92,7 @@ class MainMenuState extends MusicBeatState
 		psychVer.scrollFactor.set();
 		psychVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(psychVer);
-		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Shadz' Psych Fork v0.1.1 (UNFINISHED)", 12);
+		var fnfVer:FlxText = new FlxText(12, FlxG.height - 24, 0, "Shadz' Psych Fork v0.1.1", 12);
 		fnfVer.scrollFactor.set();
 		fnfVer.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(fnfVer);
@@ -325,7 +325,7 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 			#if desktop
-			if (controls.justPressed('debug_1'))
+			if (ClientPrefs.data.developerMode && controls.justPressed('debug_1'))
 			{
 				selectedSomethin = true;
 				FlxG.mouse.visible = false;

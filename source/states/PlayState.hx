@@ -1698,7 +1698,6 @@ class PlayState extends MusicBeatState
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 	var freezeCamera:Bool = false;
-	var allowDebugKeys:Bool = true;
 
 	override public function update(elapsed:Float)
 	{
@@ -1744,7 +1743,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (!endingSong && !inCutscene && allowDebugKeys)
+		if (ClientPrefs.data.developerMode && !endingSong && !inCutscene)
 		{
 			if (controls.justPressed('debug_1'))
 				openChartEditor();

@@ -79,6 +79,8 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
+		var option:Option = new Option('Developer Mode', "If checked, you will be able to enter any editors.", 'developerMode', BOOL);
+		addOption(option);
 		super();
 	}
 

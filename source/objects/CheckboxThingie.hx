@@ -7,7 +7,9 @@ class CheckboxThingie extends FlxSprite
 	public var copyAlpha:Bool = true;
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
-	public function new(x:Float = 0, y:Float = 0, ?checked = false) {
+
+	public function new(x:Float = 0, y:Float = 0, ?checked = false)
+	{
 		super(x, y);
 
 		frames = Paths.getSparrowAtlas('menus/checkboxanim');
@@ -16,7 +18,6 @@ class CheckboxThingie extends FlxSprite
 		animation.addByPrefix("checking", "checkbox anim0", 24, false);
 		animation.addByPrefix("checked", "checkbox finish", 24, false);
 
-		antialiasing = ClientPrefs.data.antialiasing;
 		setGraphicSize(Std.int(0.9 * width));
 		updateHitbox();
 
@@ -25,23 +26,31 @@ class CheckboxThingie extends FlxSprite
 		daValue = checked;
 	}
 
-	override function update(elapsed:Float) {
-		if (sprTracker != null) {
+	override function update(elapsed:Float)
+	{
+		if (sprTracker != null)
+		{
 			setPosition(sprTracker.x - 130 + offsetX, sprTracker.y + 30 + offsetY);
-			if(copyAlpha) {
+			if (copyAlpha)
+			{
 				alpha = sprTracker.alpha;
 			}
 		}
 		super.update(elapsed);
 	}
 
-	private function set_daValue(check:Bool):Bool {
-		if(check) {
-			if(animation.curAnim.name != 'checked' && animation.curAnim.name != 'checking') {
+	private function set_daValue(check:Bool):Bool
+	{
+		if (check)
+		{
+			if (animation.curAnim.name != 'checked' && animation.curAnim.name != 'checking')
+			{
 				animation.play('checking', true);
 				offset.set(34, 25);
 			}
-		} else if(animation.curAnim.name != 'unchecked' && animation.curAnim.name != 'unchecking') {
+		}
+		else if (animation.curAnim.name != 'unchecked' && animation.curAnim.name != 'unchecking')
+		{
 			animation.play("unchecking", true);
 			offset.set(25, 28);
 		}
@@ -50,7 +59,7 @@ class CheckboxThingie extends FlxSprite
 
 	private function animationFinished(name:String)
 	{
-		switch(name)
+		switch (name)
 		{
 			case 'checking':
 				animation.play('checked', true);
