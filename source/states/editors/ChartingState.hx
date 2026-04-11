@@ -255,7 +255,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		chartEditorSave = new FlxSave();
 		chartEditorSave.bind('chart_editor_data', CoolUtil.getSavePath());
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menus/menus/menuDesat'));
+		bg = new FlxSprite().loadGraphic(Paths.image('menus/menuDesat'));
 		bg.scrollFactor.set();
 		add(bg);
 
