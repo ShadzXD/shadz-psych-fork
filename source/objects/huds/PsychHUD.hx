@@ -47,8 +47,8 @@ class PsychHUD extends MainHUD
 			timeTxt.y += 3;
 		}
 
-		final lerpValue:Float = 0.12 / (ClientPrefs.data.framerate / 60);
-		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.08), 'healthBar', function()
+		final lerpValue:Float = 0.1 / (ClientPrefs.data.framerate / 60);
+		healthBar = new Bar(0, FlxG.height * (!ClientPrefs.data.downScroll ? 0.89 : 0.09), 'healthBar', function()
 		{
 			healthLerp = FlxMath.lerp(healthLerp, PlayState.instance.get_health(), lerpValue);
 			return healthLerp;
@@ -73,7 +73,7 @@ class PsychHUD extends MainHUD
 		iconP2.alpha = ClientPrefs.data.healthBarAlpha;
 		iconGroup.add(iconP2);
 
-		scoreText = new FlxText(0, healthBar.y + 40, FlxG.width, "", 20);
+		scoreText = new FlxText(0, healthBar.y + 45, FlxG.width, "", 20);
 		scoreText.setFormat(Paths.font(hudFont), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreText.scrollFactor.set();
 		scoreText.borderSize = 1.25;
