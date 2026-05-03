@@ -35,6 +35,7 @@ import objects.notes.*;
 import states.stages.*;
 import states.stages.objects.*;
 import objects.huds.*;
+import backend.Scoring;
 #if LUA_ALLOWED
 import psychlua.*;
 #else
@@ -68,19 +69,6 @@ class PlayState extends MusicBeatState
 {
 	public static var STRUM_X = 48.5;
 	public static var STRUM_X_MIDDLESCROLL = -271.5;
-
-	public static var ratingStuff:Array<Dynamic> = [
-		['You Suck!', 0.2], // From 0% to 19%
-		['Shit', 0.4], // From 20% to 39%
-		['Bad', 0.5], // From 40% to 49%
-		['Bruh', 0.6], // From 50% to 59%
-		['Meh', 0.69], // From 60% to 68%
-		['Nice', 0.7], // 69%
-		['Good', 0.8], // From 70% to 79%
-		['Great', 0.9], // From 80% to 89%
-		['Sick!', 1], // From 90% to 99%
-		['Perfect!!', 1] // The value on this one isn't used actually, since Perfect is always "1"
-	];
 
 	// event variables
 	private var isCameraOnForcedPos:Bool = false;
@@ -162,6 +150,7 @@ class PlayState extends MusicBeatState
 	public var opponentStrums:FlxTypedGroup<StrumNote> = new FlxTypedGroup<StrumNote>();
 	public var playerStrums:FlxTypedGroup<StrumNote> = new FlxTypedGroup<StrumNote>();
 	public var grpNoteSplashes:FlxTypedGroup<NoteSplash> = new FlxTypedGroup<NoteSplash>();
+	public var grpHoldSplashes:FlxTypedGroup<SustainSplash> = new FlxTypedGroup<SustainSplash>();
 
 	public var camZooming:Bool = false;
 	public var camZoomingMult:Float = 1;
@@ -198,6 +187,7 @@ class PlayState extends MusicBeatState
 	public var botplaySine:Float = 0;
 	public var botplayTxt:FlxText;
 
+	public var camPreHUD:FlxCamera;
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
@@ -264,6 +254,8 @@ class PlayState extends MusicBeatState
 	private static var _lastLoadedModDirectory:String = '';
 	public static var nextReloadAll:Bool = false;
 
+	private var isZooming:Bool = false;
+
 	// HUD Class Objects
 	public var hudClass:MainHUD;
 
@@ -272,6 +264,11 @@ class PlayState extends MusicBeatState
 	 * Mainly tied to the hudclass, just in case you want to use your own spin on stuff.
 	 */
 	var useHealth:Bool = true;
+
+	/**
+	 * variable that enables vslice scoring.
+	 */
+	var useNewScoring:Bool = true;
 
 	override public function create()
 	{
@@ -297,21 +294,28 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-
-		// Gameplay settings
-		healthGain = ClientPrefs.getGameplaySetting('healthgain');
-		healthLoss = ClientPrefs.getGameplaySetting('healthloss');
-		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill');
-		practiceMode = ClientPrefs.getGameplaySetting('practice');
-		cpuControlled = ClientPrefs.getGameplaySetting('botplay');
+		if (isStoryMode)
+		{
+			// Gameplay settings
+			healthGain = ClientPrefs.getGameplaySetting('healthgain');
+			healthLoss = ClientPrefs.getGameplaySetting('healthloss');
+			instakillOnMiss = ClientPrefs.getGameplaySetting('instakill');
+			practiceMode = ClientPrefs.getGameplaySetting('practice');
+			cpuControlled = ClientPrefs.getGameplaySetting('botplay');
+		}
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = initPsychCamera();
 		camHUD = new FlxCamera();
+		camPreHUD = new FlxCamera();
+
 		camOther = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
+		camPreHUD.bgColor.alpha = 0;
+
 		camOther.bgColor.alpha = 0;
 
+		FlxG.cameras.add(camPreHUD, false);
 		FlxG.cameras.add(camHUD, false);
 		FlxG.cameras.add(camOther, false);
 
@@ -496,6 +500,7 @@ class PlayState extends MusicBeatState
 		comboGroup = new FlxSpriteGroup();
 		add(comboGroup);
 		add(noteGroup);
+		add(grpHoldSplashes);
 
 		Conductor.songPosition = -Conductor.crochet * 5 + Conductor.offset;
 
@@ -524,6 +529,8 @@ class PlayState extends MusicBeatState
 		moveCameraSection();
 
 		noteGroup.cameras = [camHUD];
+		grpHoldSplashes.cameras = [camHUD];
+
 		comboGroup.cameras = [camHUD];
 
 		startingSong = true;
@@ -595,6 +602,14 @@ class PlayState extends MusicBeatState
 		var splash:NoteSplash = new NoteSplash();
 		grpNoteSplashes.add(splash);
 		splash.alpha = 0.000001; // cant make it invisible or it won't allow precaching
+
+		SustainSplash.startCrochet = Conductor.stepCrochet;
+		SustainSplash.frameRate = Math.floor(24 / 100 * SONG.bpm);
+
+		var splash:SustainSplash = new SustainSplash();
+		grpHoldSplashes.add(splash);
+		splash.alpha = 0.0001;
+
 		super.create();
 		Paths.clearUnusedMemory();
 
@@ -823,7 +838,10 @@ class PlayState extends MusicBeatState
 		{
 			videoCutscene = new VideoSprite(fileName, forMidSong, canSkip, loop);
 			if (forMidSong)
+			{
+				videoCutscene.cameras = [camPreHUD];
 				videoCutscene.videoSprite.bitmap.rate = playbackRate;
+			}
 
 			// Finish callback
 			if (!forMidSong)
@@ -986,7 +1004,14 @@ class PlayState extends MusicBeatState
 				setOnScripts('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 				// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 			}
-
+			var strumBG:FlxSprite = new FlxSprite(playerStrums.members[0].x - 20).makeGraphic(1, 1, FlxColor.BLACK);
+			strumBG.scale.set(490, FlxG.height);
+			strumBG.updateHitbox();
+			strumBG.alpha = 0.6;
+			strumBG.scrollFactor.set();
+			strumBG.screenCenter(Y);
+			strumBG.cameras = [camPreHUD];
+			add(strumBG);
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5 + Conductor.offset;
 			setOnScripts('startedCountdown', true);
@@ -1490,6 +1515,24 @@ class PlayState extends MusicBeatState
 
 			case 'Play Sound':
 				Paths.sound(event.value1); // Precache sound
+
+			case 'Play Video':
+				/**
+					* We have to do this to avoid issues with lag or the video being misplaced.
+
+					if (!preloadedVideoAtLeastOnce)
+					{
+						// preloadedVideoAtLeastOnce = true;
+						videoCutscene = new VideoSprite(Paths.video('lol'), false, false, false);
+						videoCutscene.alpha = 0.01;
+						add(videoCutscene);
+					}
+				 */
+				#if hxvlc
+				// videoCutscene.play();
+				startVideo(event.value1, true, false, false, false);
+				trace('pre-loaded ' + event.value1);
+				#end
 		}
 		stagesFunc(function(stage:BaseStage) stage.eventPushedUnique(event));
 	}
@@ -1538,6 +1581,7 @@ class PlayState extends MusicBeatState
 	{
 		var strumLineX:Float = useMiddleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X;
 		var strumLineY:Float = ClientPrefs.data.downScroll ? (FlxG.height - 150) : 50;
+
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
@@ -1610,6 +1654,8 @@ class PlayState extends MusicBeatState
 		stagesFunc(function(stage:BaseStage) stage.closeSubState());
 		if (paused)
 		{
+			videoCutscene?.resume();
+
 			if (FlxG.sound.music != null && !startingSong && canResync)
 			{
 				resyncVocals();
@@ -1939,7 +1985,7 @@ class PlayState extends MusicBeatState
 		persistentUpdate = false;
 		persistentDraw = true;
 		paused = true;
-
+		videoCutscene?.pause();
 		if (FlxG.sound.music != null)
 		{
 			FlxG.sound.music.pause();
@@ -2373,6 +2419,25 @@ class PlayState extends MusicBeatState
 				if (flValue2 == null)
 					flValue2 = 1;
 				FlxG.sound.play(Paths.sound(value1), flValue2);
+			case 'Play Video':
+				FlxG.log.add('called video');
+				startVideo(value1, true, false, false, true);
+
+			case 'Zoom Camera':
+				if (isZooming)
+					return;
+				isZooming = true;
+				var split:Array<String> = value2.split(',');
+				var tweenTime:Float = Std.parseFloat(split[0]);
+
+				FlxTween.tween(FlxG.camera, {zoom: flValue1}, tweenTime, {
+					ease: LuaUtils.getTweenEaseByString(split[1]),
+					onComplete: function(twn:FlxTween)
+					{
+						defaultCamZoom = flValue1;
+						isZooming = false;
+					}
+				});
 		}
 
 		stagesFunc(function(stage:BaseStage) stage.eventCalled(eventName, value1, value2, flValue1, flValue2, strumTime));
@@ -2674,7 +2739,7 @@ class PlayState extends MusicBeatState
 		if (!note.ratingDisabled)
 			daRating.hits++;
 		note.rating = daRating.name;
-		score = daRating.score;
+		score = Scoring.scoreNoteAccuracy(noteDiff);
 
 		if (daRating.noteSplash && !note.noteSplashData.disabled)
 			spawnNoteSplashOnNote(note);
@@ -3008,6 +3073,8 @@ class PlayState extends MusicBeatState
 			daNote.noteType,
 			daNote.isSustainNote
 		]);
+		songScore -= Scoring.missNoteScore();
+
 		if (result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll)
 			callOnHScript('noteMiss', [daNote]);
 	}
@@ -3016,6 +3083,7 @@ class PlayState extends MusicBeatState
 	{
 		if (ClientPrefs.data.ghostTapping)
 			return; // fuck it
+		songScore -= Scoring.missGhostTapScore();
 
 		noteMissCommon(direction);
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
@@ -3041,7 +3109,6 @@ class PlayState extends MusicBeatState
 		combo = 0;
 
 		health -= subtract * healthLoss;
-		songScore -= 10;
 		if (!endingSong)
 			songMisses++;
 		totalPlayed++;
@@ -3131,6 +3198,7 @@ class PlayState extends MusicBeatState
 		]);
 		if (result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll)
 			callOnHScript('opponentNoteHit', [note]);
+		spawnHoldSplashOnNote(note);
 
 		if (!note.isSustainNote)
 			invalidateNote(note);
@@ -3218,6 +3286,11 @@ class PlayState extends MusicBeatState
 					combo = 9999;
 				popUpScore(note);
 			}
+			if (note.isSustainNote)
+			{
+				songScore += Scoring.holdNoteScore();
+				RecalculateRating();
+			}
 			var gainHealth:Bool = true; // prevent health gain, *if* sustains are treated as a singular note
 			if (gainHealth)
 				health += note.hitHealth * healthGain;
@@ -3241,6 +3314,7 @@ class PlayState extends MusicBeatState
 			if (!note.noteSplashData.disabled && !note.isSustainNote)
 				spawnNoteSplashOnNote(note);
 		}
+		spawnHoldSplashOnNote(note);
 
 		stagesFunc(function(stage:BaseStage) stage.goodNoteHit(note));
 		var result:Dynamic = callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
@@ -3273,6 +3347,38 @@ class PlayState extends MusicBeatState
 		splash.babyArrow = strum;
 		splash.spawnSplashNote(x, y, data, note);
 		grpNoteSplashes.add(splash);
+	}
+
+	public function spawnHoldSplashOnNote(note:Note)
+	{
+		if (!note.isSustainNote && note.tail.length != 0 && note.tail[note.tail.length - 1].extraData['holdSplash'] == null)
+		{
+			spawnHoldSplash(note);
+		}
+		else if (note.isSustainNote)
+		{
+			final end:Note = StringTools.endsWith(note.animation.curAnim.name, 'end') ? note : note.parent.tail[note.parent.tail.length - 1];
+			if (end != null)
+			{
+				var leSplash:SustainSplash = end.extraData['holdSplash'];
+				if (leSplash == null && !end.parent.wasGoodHit)
+				{
+					spawnHoldSplash(end);
+				}
+				else if (leSplash != null)
+				{
+					leSplash.visible = true;
+				}
+			}
+		}
+	}
+
+	public function spawnHoldSplash(note:Note)
+	{
+		var end:Note = note.isSustainNote ? note.parent.tail[note.parent.tail.length - 1] : note.tail[note.tail.length - 1];
+		var splash:SustainSplash = grpHoldSplashes.recycle(SustainSplash);
+		splash.setupSusSplash(strumLineNotes.members[note.noteData + (note.mustPress ? 4 : 0)], note, playbackRate);
+		grpHoldSplashes.add(end.extraData['holdSplash'] = splash);
 	}
 
 	override function destroy()

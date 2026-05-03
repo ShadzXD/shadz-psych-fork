@@ -2,113 +2,113 @@
 	"animations": {
 		"blue2": {
 			"offsets": [
-				-18,
-				-26
+				-57,
+				-58
 			],
 			"noteData": 5,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash blue 2",
+			"prefix": "splash2",
 			"indices": [],
 			"name": "blue2"
 		},
 		"purple": {
 			"offsets": [
-				-23,
-				-17
+				-64,
+				-49
 			],
 			"noteData": 0,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash purple 1",
+			"prefix": "splash1",
 			"indices": [],
 			"name": "purple"
 		},
 		"red": {
 			"offsets": [
-				-33,
-				-20
+				-73,
+				-69
 			],
 			"noteData": 3,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash red 1",
+			"prefix": "splash1",
 			"indices": [],
 			"name": "red"
 		},
 		"red2": {
 			"offsets": [
-				-18,
-				-17
+				-65,
+				-58
 			],
 			"noteData": 7,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash red 2",
+			"prefix": "splash2",
 			"indices": [],
 			"name": "red2"
 		},
 		"blue": {
 			"offsets": [
-				-26,
-				-20
+				-66,
+				-58
 			],
 			"noteData": 1,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash blue 1",
+			"prefix": "splash1",
 			"indices": [],
 			"name": "blue"
 		},
 		"purple2": {
 			"offsets": [
-				-14,
-				-16
+				-52,
+				-58
 			],
 			"noteData": 4,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash purple 2",
+			"prefix": "splash2",
 			"indices": [],
 			"name": "purple2"
 		},
 		"green": {
 			"offsets": [
-				-26,
-				-20
+				-67,
+				-57
 			],
 			"noteData": 2,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash green 1",
+			"prefix": "splash1",
 			"indices": [],
 			"name": "green"
 		},
 		"green2": {
 			"offsets": [
-				-26,
-				-11
+				-58,
+				-60
 			],
 			"noteData": 6,
 			"fps": [
 				22,
 				26
 			],
-			"prefix": "vanilla splash green 2",
+			"prefix": "splash2",
 			"indices": [],
 			"name": "green2"
 		}
@@ -116,5 +116,5 @@
 	"allowRGB": true,
 	"allowPixel": true,
 	"rgb": null,
-	"scale": 0.8
+	"scale": 1
 }

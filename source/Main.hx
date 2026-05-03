@@ -69,7 +69,6 @@ class Main extends Sprite
 		backend.Native.fixScaling();
 		#end
 
-		// FlxAssets.FONT_DEFAULT = Paths.font("vcr.ttf");
 		// Credits to MAJigsaw77 (he's the og author for this code)
 		#if android
 		Sys.setCwd(Path.addTrailingSlash(Context.getExternalFilesDir()));

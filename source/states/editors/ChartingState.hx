@@ -114,6 +114,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		[
 			'Play Sound',
 			"Value 1: Sound file name\nValue 2: Volume (Default: 1), ranges from 0 to 1"
+		],
+		['Play Video', "Value 1: Video Name"],
+		[
+			'Zoom Camera',
+			"Value 1: Change Camera Zoom.\nValue 2: How long to change and the ease type. These are in one line but are seperate by a comma. (Example: 0.2, bouncein)\nEase types can be found on the haxeflixel site."
 		]
 	];
 
@@ -682,6 +687,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		noteTextureInputText.text = PlayState.SONG.arrowSkin;
 		noteSplashesInputText.text = PlayState.SONG.splashSkin;
+		sustainSplashesInputText.text = PlayState.SONG.holdSplashSkin;
 	}
 
 	var noteSelectionSine:Float = 0;
@@ -2572,6 +2578,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 	var noRGBCheckBox:PsychUICheckBox;
 	var noteTextureInputText:PsychUIInputText;
 	var noteSplashesInputText:PsychUIInputText;
+	var sustainSplashesInputText:PsychUIInputText;
 
 	function addDataTab()
 	{
@@ -2612,9 +2619,8 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 		}
 
 		objY += 35;
-		noRGBCheckBox = new PsychUICheckBox(objX, objY, 'Disable Note RGB', 100, updateNotesRGB);
+		noRGBCheckBox = new PsychUICheckBox(objX + 140, objY, 'Disable Note RGB', 100, updateNotesRGB);
 
-		objY += 40;
 		noteTextureInputText = new PsychUIInputText(objX, objY, 120, '');
 		noteTextureInputText.unfocus = function()
 		{
@@ -2652,6 +2658,7 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 					showOutput('ERROR: "$textureLoad" not found.', true);
 			}
 		};
+		objY += 40;
 
 		noteSplashesInputText = new PsychUIInputText(objX + 140, objY, 120, '');
 		noteSplashesInputText.onChange = function(old:String, cur:String)
@@ -2661,6 +2668,13 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 				PlayState.SONG.splashSkin = null;
 		}
 
+		sustainSplashesInputText = new PsychUIInputText(objX, objY, 120, '');
+		sustainSplashesInputText.onChange = function(old:String, cur:String)
+		{
+			PlayState.SONG.holdSplashSkin = cur;
+			if (cur.trim().length < 1)
+				PlayState.SONG.holdSplashSkin = null;
+		}
 		tab_group.add(new FlxText(gameOverCharDropDown.x, gameOverCharDropDown.y - 15, 120, 'Game Over Character:'));
 		tab_group.add(new FlxText(gameOverSndInputText.x, gameOverSndInputText.y - 15, 180, 'Game Over Death Sound (sounds/):'));
 		tab_group.add(new FlxText(gameOverLoopInputText.x, gameOverLoopInputText.y - 15, 180, 'Game Over Loop Music (music/):'));
@@ -2672,8 +2686,11 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 
 		tab_group.add(new FlxText(noteTextureInputText.x, noteTextureInputText.y - 15, 100, 'Note Texture:'));
 		tab_group.add(new FlxText(noteSplashesInputText.x, noteSplashesInputText.y - 15, 120, 'Note Splashes Texture:'));
+		tab_group.add(new FlxText(sustainSplashesInputText.x, sustainSplashesInputText.y - 15, 140, 'Sustain Splashes Texture:'));
+
 		tab_group.add(noteTextureInputText);
 		tab_group.add(noteSplashesInputText);
+		tab_group.add(sustainSplashesInputText);
 
 		tab_group.add(gameOverCharDropDown); // lowest priority to display properly
 	}
