@@ -75,6 +75,8 @@ import Init;
 	public var safeFrames:Float = 10.0;
 	public var discordRPC:Bool = true;
 	public var loadingScreen:Bool = true;
+	public var underlayOpacity:Float = 0;
+
 }
 
 class ClientPrefs

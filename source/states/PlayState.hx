@@ -1004,14 +1004,15 @@ class PlayState extends MusicBeatState
 				setOnScripts('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 				// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 			}
-			var strumBG:FlxSprite = new FlxSprite(playerStrums.members[0].x - 20).makeGraphic(1, 1, FlxColor.BLACK);
-			strumBG.scale.set(490, FlxG.height);
-			strumBG.updateHitbox();
-			strumBG.alpha = 0.6;
-			strumBG.scrollFactor.set();
-			strumBG.screenCenter(Y);
-			strumBG.cameras = [camPreHUD];
-			add(strumBG);
+			//this is getting reworked, ignore it for now
+			var strumUnderlay:FlxSprite = new FlxSprite(playerStrums.members[0].x - 20).makeGraphic(1, 1, FlxColor.BLACK);
+			strumUnderlay.scale.set(490, FlxG.height);
+			strumUnderlay.updateHitbox();
+			strumUnderlay.alpha = ClientPrefs.data.underlayOpacity;
+			strumUnderlay.scrollFactor.set();
+			strumUnderlay.screenCenter(Y);
+			strumUnderlay.cameras = [camPreHUD];
+			add(strumUnderlay);
 			startedCountdown = true;
 			Conductor.songPosition = -Conductor.crochet * 5 + Conductor.offset;
 			setOnScripts('startedCountdown', true);

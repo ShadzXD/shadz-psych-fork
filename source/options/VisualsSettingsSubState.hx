@@ -33,6 +33,14 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 		var option:Option = new Option('Score Text Grow on Hit', "If unchecked, disables the Score text growing\neverytime you hit a note.", 'scoreZoom', BOOL);
 		addOption(option);
 
+		var option:Option = new Option('Background Strumline Opacity', 'How much transparent the background behind the notes should be.', 'underlayOpacity', PERCENT);
+		option.scrollSpeed = 1;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
+
 		var option:Option = new Option('Health Bar Opacity', 'How much transparent should the health bar and icons be.', 'healthBarAlpha', PERCENT);
 		option.scrollSpeed = 1.6;
 		option.minValue = 0.0;
@@ -53,6 +61,8 @@ class VisualsSettingsSubState extends BaseOptionsMenu
 
 		var option:Option = new Option('Window Dark Mode', "If unchecked, Game Window will be light mode (Requires game restart)", 'windowDarkMode', BOOL);
 		addOption(option);
+
+		
 		super();
 	}
 }
