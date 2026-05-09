@@ -153,9 +153,13 @@ class Character extends FlxAnimate
 	{
 		isAnimateAtlas = false;
 
-		var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
-		if (Paths.fileExists(animToFind, TEXT))
-			isAnimateAtlas = true;
+		var atlastoFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
+		#if MODS_ALLOWED
+		if (FileSystem.exists(atlastoFind))
+		#else
+		if (Assets.exists(atlastoFind))
+		#end			
+		isAnimateAtlas = true;
 
 		scale.set(1, 1);
 		updateHitbox();
