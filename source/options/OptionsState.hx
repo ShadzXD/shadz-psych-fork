@@ -5,7 +5,7 @@ import backend.StageData;
 
 class OptionsState extends MusicBeatState
 {
-	var options:Array<String> = ['Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals', 'Gameplay'];
+	var options:Array<String> = ['Note Colors','Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals', 'Gameplay'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 
 	private static var curSelected:Int = 0;
@@ -16,6 +16,8 @@ class OptionsState extends MusicBeatState
 	{
 		switch (label)
 		{
+			case 'Note Colors':
+				openSubState(new options.NotesColorSubState());
 			case 'Controls':
 				openSubState(new options.ControlsSubState());
 			case 'Graphics':
