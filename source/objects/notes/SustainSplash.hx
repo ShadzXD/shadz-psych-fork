@@ -68,7 +68,7 @@ class SustainSplash extends FlxSprite
 		visible = true;
 		strumNote = strum;
 		repositionSplash();
-
+		alpha = strum.alpha;
 		animation.play('start');
 		animation.curAnim.looped = false;
 

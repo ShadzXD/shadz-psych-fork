@@ -33,7 +33,7 @@ class PsychHUD extends MainHUD
 		timeTxt.visible = showTime;
 		if (ClientPrefs.data.timeBarType == 'Song Name')
 			timeTxt.text = PlayState.SONG.song;
-		timeTxt.borderSize = 1.25;
+		timeTxt.borderSize = 1.75;
 		timeBar = new Bar(0, timeTxt.y + (timeTxt.height / 4), 'timeBar', function() return PlayState.instance.songPercent, 0, 1);
 		timeBar.scrollFactor.set();
 		timeBar.screenCenter(X);
@@ -73,10 +73,10 @@ class PsychHUD extends MainHUD
 		iconP2.alpha = ClientPrefs.data.healthBarAlpha;
 		iconGroup.add(iconP2);
 
-		scoreText = new FlxText(0, healthBar.y + 45, FlxG.width, "", 20);
-		scoreText.setFormat(Paths.font(hudFont), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreText = new FlxText(0, healthBar.y + 42, FlxG.width, "", 21);
+		scoreText.setFormat(Paths.font(hudFont), 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreText.scrollFactor.set();
-		scoreText.borderSize = 1.25;
+		scoreText.borderSize = 1.75;
 		add(scoreText);
 		updateScore(false, PlayState.instance.songScore, PlayState.instance.songMisses, PlayState.instance.ratingPercent); // hope this doesnt cause a crash
 	}
@@ -114,14 +114,12 @@ class PsychHUD extends MainHUD
 		if (PlayState.instance.totalPlayed != 0) // Prevent divide by 0
 			recalculateRating(percent);
 
-		var str:String = ratingName;
-
 		var percent:Float = CoolUtil.floorDecimal(percent * 100, 2);
-		str += ' (${percent}%)';
+		var str:String = '${percent}%';
 
 		// "tempScore" variable is used to prevent another memory leak, just in case
 		// "\n" here prevents the text from being cut off by beat zooms
-		var tempScore:String = 'Score: ${FlxStringUtil.formatMoney(score, false, true)}' + (' • Misses: ${misses}') + ' • Rating: ${str}';
+		var tempScore:String = 'Score: ${FlxStringUtil.formatMoney(score, false, true)}' + (' • Misses: ${misses}') + ' • Accuracy: ${str}';
 
 		scoreText.text = tempScore;
 	}

@@ -110,45 +110,56 @@ class Character extends FlxAnimate
 		var characterPath:String = 'characters/$character.json';
 
 		var path:String = Paths.getPath(characterPath, TEXT, null, true);
-		#if MODS_ALLOWED
-		if (!FileSystem.exists(path))
-		#else
-		if (!Assets.exists(path))
-		#end
-		{
-			path = Paths.getSharedPath('characters/' + DEFAULT_CHARACTER +
-				'.json'); // If a character couldn't be found, change him to BF just to prevent a crash
-			missingCharacter = true;
-			missingText = new FlxText(0, 0, 300, 'ERROR:\n$character.json', 16);
-			missingText.alignment = CENTER;
-		}
-
-		try
+		if (character != 'empty')
 		{
 			#if MODS_ALLOWED
-			loadCharacterFile(Json.parse(File.getContent(path)));
+			if (!FileSystem.exists(path))
 			#else
-			loadCharacterFile(Json.parse(Assets.getText(path)));
+			if (!Assets.exists(path))
 			#end
-		}
-		catch (e:Dynamic)
-		{
-			trace('Error loading character file of "$character": $e');
-		}
+			{
+				path = Paths.getSharedPath('characters/' + DEFAULT_CHARACTER +
+					'.json'); // If a character couldn't be found, change him to BF just to prevent a crash
+				missingCharacter = true;
+				missingText = new FlxText(0, 0, 300, 'ERROR:\n$character.json', 16);
+				missingText.alignment = CENTER;
+			}
 
-		skipDance = false;
-		hasMissAnimations = hasAnimation('singLEFTmiss') || hasAnimation('singDOWNmiss') || hasAnimation('singUPmiss') || hasAnimation('singRIGHTmiss');
-		recalculateDanceIdle();
-		dance();
+			try
+			{
+				#if MODS_ALLOWED
+				loadCharacterFile(Json.parse(File.getContent(path)));
+				#else
+				loadCharacterFile(Json.parse(Assets.getText(path)));
+				#end
+			}
+			catch (e:Dynamic)
+			{
+				trace('Error loading character file of "$character": $e');
+			}
+			skipDance = false;
+			hasMissAnimations = hasAnimation('singLEFTmiss') || hasAnimation('singDOWNmiss') || hasAnimation('singUPmiss') || hasAnimation('singRIGHTmiss');
+			recalculateDanceIdle();
+			dance();
+		}
+		else
+		{
+			trace('no character selected');
+			kill();
+		}
 	}
 
 	public function loadCharacterFile(json:Dynamic)
 	{
 		isAnimateAtlas = false;
 
-		var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
-		if (Assets.exists(animToFind))
-			isAnimateAtlas = true;
+		var atlastoFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
+		#if MODS_ALLOWED
+		if (FileSystem.exists(atlastoFind))
+		#else
+		if (Assets.exists(atlastoFind))
+		#end			
+		isAnimateAtlas = true;
 
 		scale.set(1, 1);
 		updateHitbox();
@@ -161,7 +172,7 @@ class Character extends FlxAnimate
 		{
 			try
 			{
-				frames = FlxAnimateFrames.fromAnimate(Paths.getPath('images/' + json.image));
+				frames = Paths.getTextureAtlas(json.image);
 			}
 			catch (e:haxe.Exception)
 			{
@@ -186,7 +197,7 @@ class Character extends FlxAnimate
 		healthIcon = json.healthicon;
 		singDuration = json.sing_duration;
 		flipX = (json.flip_x != isPlayer);
-		healthColorArray = (json.healthbar_colors != null && json.healthbar_colors.length > 2) ? json.healthbar_colors : [161, 161, 161];
+		healthColorArray = (json.healthbar_colors != null && json.healthbar_colors.length > 2) ? json.healthbar_colors : [255, 255, 255];
 		vocalsFile = json.vocals_file != null ? json.vocals_file : '';
 		originalFlipX = (json.flip_x == true);
 		editorIsPlayer = json._editor_isPlayer;
