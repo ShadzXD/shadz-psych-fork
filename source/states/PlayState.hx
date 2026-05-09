@@ -294,7 +294,7 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-		if (isStoryMode)
+		if (!isStoryMode)
 		{
 			// Gameplay settings
 			healthGain = ClientPrefs.getGameplaySetting('healthgain');
@@ -2471,57 +2471,32 @@ class PlayState extends MusicBeatState
 
 	public function moveCameraToGirlfriend()
 	{
+		if (gf.curCharacter == 'empty')
+			return;
 		camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
 		camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
 		camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];
-		tweenCamIn();
 	}
-
-	var cameraTwn:FlxTween;
 
 	public function moveCamera(isDad:Bool)
 	{
 		if (isDad)
 		{
-			if (dad == null)
-				return;
-			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
-			camFollow.x += dad.cameraPosition[0] + opponentCameraOffset[0];
-			camFollow.y += dad.cameraPosition[1] + opponentCameraOffset[1];
-			tweenCamIn();
+			if (dad.curCharacter != 'empty')
+			{
+				camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+				camFollow.x += dad.cameraPosition[0] + opponentCameraOffset[0];
+				camFollow.y += dad.cameraPosition[1] + opponentCameraOffset[1];
+			}
 		}
 		else
 		{
-			if (boyfriend == null)
-				return;
-			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
-			camFollow.x -= boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];
-			camFollow.y += boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];
-
-			if (songName == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1)
+			if (boyfriend.curCharacter != 'empty')
 			{
-				cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {
-					ease: FlxEase.elasticInOut,
-					onComplete: function(twn:FlxTween)
-					{
-						cameraTwn = null;
-					}
-				});
+				camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+				camFollow.x -= boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];
+				camFollow.y += boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];
 			}
-		}
-	}
-
-	public function tweenCamIn()
-	{
-		if (songName == 'tutorial' && cameraTwn == null && FlxG.camera.zoom != 1.3)
-		{
-			cameraTwn = FlxTween.tween(FlxG.camera, {zoom: 1.3}, (Conductor.stepCrochet * 4 / 1000), {
-				ease: FlxEase.elasticInOut,
-				onComplete: function(twn:FlxTween)
-				{
-					cameraTwn = null;
-				}
-			});
 		}
 	}
 
@@ -3151,8 +3126,7 @@ class PlayState extends MusicBeatState
 		if (result == LuaUtils.Function_Stop)
 			return;
 
-		if (songName != 'tutorial')
-			camZooming = true;
+		camZooming = true;
 
 		if (note.noteType == 'Hey!' && dad.hasAnimation('hey'))
 		{
