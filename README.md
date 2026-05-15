@@ -6,7 +6,7 @@ Compile Guide
 ===========
 1. [Install HaxeFlixel!](https://haxeflixel.com/documentation/install-haxeflixel/)
 2. Install the engine's source code. (Press the green code button on this page and press either download ZIP or open with Github Desktop)
-3. open a terminal in the engines source code folder `haxelib setup` and type `.haxelib`.
+3. open a terminal in the engines source code folder, type `haxelib setup` press enter, and then type `.haxelib`.
 4. run `haxelib install hmm` to install the library used to the engines's specific libraries.
 5. run `hmm install` to install all of the game's libraries.
 6. run `lime test windows` to compile the game.
