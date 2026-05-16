@@ -1,5 +1,7 @@
 My Personal Psych Engine v1.0.4 Fork made for fun.
 
+Aims to fix bugs with base Psych Engine and keep parity for the most part.
+
 Fork used for [Super Funkin' Galaxy](https://gamebanana.com/mods/444759) (next update) & [VS Oshawott: Funkin' Beyond](https://gamebanana.com/mods/660851).
 
 Compile Guide
@@ -12,7 +14,8 @@ Compile Guide
 6. run `hmm install` to install all of the game's libraries.
 7. run `lime test windows` to compile the game.
 
-New Features:
+New Features
+===========
 - Updates texture-atlas library to flixel animate.
 - Lower RAM usage + multiple General Optimizations.
 - More visually pleasing sustain notes.
