@@ -499,10 +499,12 @@ class Paths
 	}
 	#end
 
-	inline static public function getTextureAtlas(key:String, ?library:String):Dynamic
+	inline static public function getTextureAtlas(key:String, ?library:String):FlxAnimateFrames
 	{
-		trace(Paths.image(key + '/spritemap1', library));
-		var path = getPath('images/' + key);
+		// gpu caching
+		Paths.image(key + '/spritemap1', library);
+
+		var path:String = getPath('images/' + key);
 		return animate.FlxAnimateFrames.fromAnimate(path);
 	}
 }

@@ -19,7 +19,6 @@ class PsychHUD extends MainHUD
 	final LOSING_ICON_VALUE = 1;
 	final ALLY_ICON_OFFSET = 60;
 	final ENEMY_ICON_OFFSET = 40;
-	var timeBar:Bar;
 
 	public function new()
 	{
@@ -124,20 +123,8 @@ class PsychHUD extends MainHUD
 		scoreText.text = tempScore;
 	}
 
-	override function recalculateRating(percent:Float)
-	{
-		ratingName = ratingStuff[ratingStuff.length - 1][0]; // Uses last string
-		if (percent < 1)
-			for (i in 0...ratingStuff.length - 1)
-				if (percent < ratingStuff[i][1])
-				{
-					ratingName = ratingStuff[i][0];
-					break;
-				}
-	}
-
 	override public function botplayStuff()
-		scoreText.text = 'BOTPLAY';
+		scoreText.text = '[BOTPLAY]';
 
 	override public function doScoreBop():Void
 	{

@@ -196,7 +196,6 @@ class PlayState extends MusicBeatState
 	public var songScore:Int = 0;
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
-	public var ratingName:String = '?';
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -266,9 +265,9 @@ class PlayState extends MusicBeatState
 	var useHealth:Bool = true;
 
 	/**
-	 * variable that enables vslice scoring.
+	 * Whether the song uses opponent vocals.
 	 */
-	var useNewScoring:Bool = true;
+	var hasOpponentVoices:Bool = false;
 
 	override public function create()
 	{
@@ -411,6 +410,7 @@ class PlayState extends MusicBeatState
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
 		luaDebugGroup = new FlxTypedGroup<psychlua.DebugLuaText>();
 		luaDebugGroup.cameras = [camOther];
+		luaDebugGroup.visible = ClientPrefs.data.developerMode;
 		add(luaDebugGroup);
 		#end
 
@@ -1004,7 +1004,7 @@ class PlayState extends MusicBeatState
 				setOnScripts('defaultOpponentStrumY' + i, opponentStrums.members[i].y);
 				// if(ClientPrefs.data.middleScroll) opponentStrums.members[i].visible = false;
 			}
-			//this is getting reworked, ignore it for now
+			// this is getting reworked, ignore it for now
 			var strumUnderlay:FlxSprite = new FlxSprite(playerStrums.members[0].x - 20).makeGraphic(1, 1, FlxColor.BLACK);
 			strumUnderlay.scale.set(490, FlxG.height);
 			strumUnderlay.updateHitbox();
@@ -1303,7 +1303,10 @@ class PlayState extends MusicBeatState
 
 				var oppVocals = Paths.voices(songData.song, (dad.vocalsFile == null || dad.vocalsFile.length < 1) ? 'Opponent' : dad.vocalsFile);
 				if (oppVocals != null && oppVocals.length > 0)
+				{
 					opponentVocals.loadEmbedded(oppVocals);
+					hasOpponentVoices = true;
+				}
 			}
 		}
 		catch (e:Dynamic)
@@ -1724,8 +1727,11 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.play();
 		#if FLX_PITCH FlxG.sound.music.pitch = playbackRate; #end
 		Conductor.songPosition = FlxG.sound.music.time + Conductor.offset;
-
-		var checkVocals = [vocals, opponentVocals];
+		var checkVocals;
+		if (hasOpponentVoices)
+			checkVocals = [vocals, opponentVocals];
+		else
+			checkVocals = [vocals];
 		for (voc in checkVocals)
 		{
 			if (FlxG.sound.music.time < vocals.length)
@@ -1826,7 +1832,7 @@ class PlayState extends MusicBeatState
 			if (secondsTotal < 0)
 				secondsTotal = 0;
 
-			hudClass.updateTime(secondsTotal);
+			hudClass?.updateTime(secondsTotal);
 		}
 
 		if (camZooming)
@@ -3088,7 +3094,7 @@ class PlayState extends MusicBeatState
 		if (!endingSong)
 			songMisses++;
 		totalPlayed++;
-		RecalculateRating(true);
+		RecalculateRating(true, false);
 
 		// play character anims
 		var char:Character = boyfriend;
@@ -3160,7 +3166,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (opponentVocals.length <= 0)
+		if (!hasOpponentVoices)
 			vocals.volume = 1;
 		strumPlayAnim(true, Std.int(Math.abs(note.noteData)), Conductor.stepCrochet * 1.25 / 1000 / playbackRate);
 		note.hitByOpponent = true;
@@ -3261,10 +3267,10 @@ class PlayState extends MusicBeatState
 					combo = 9999;
 				popUpScore(note);
 			}
-			if (note.isSustainNote)
+			if (note.isSustainNote && !cpuControlled)
 			{
 				songScore += Scoring.holdNoteScore();
-				RecalculateRating();
+				RecalculateRating(false, false);
 			}
 			var gainHealth:Bool = true; // prevent health gain, *if* sustains are treated as a singular note
 			if (gainHealth)
@@ -3740,7 +3746,6 @@ class PlayState extends MusicBeatState
 	}
 
 	public var ratingPercent:Float;
-	public var ratingFC:String;
 
 	public function RecalculateRating(badHit:Bool = false, scoreBop:Bool = true)
 	{
@@ -3760,16 +3765,15 @@ class PlayState extends MusicBeatState
 			}
 		}
 		setOnScripts('rating', ratingPercent);
-		setOnScripts('ratingFC', ratingFC);
 		setOnScripts('totalPlayed', totalPlayed);
 		setOnScripts('totalNotesHit', totalNotesHit);
-		checkBotplay(badHit);
+		checkBotplay(badHit, scoreBop);
 	}
 
-	public function checkBotplay(badHit:Bool = false)
+	public function checkBotplay(badHit:Bool = false, scoreBop:Bool)
 	{
 		if (!ClientPrefs.getGameplaySetting('botplay'))
-			updateScore(badHit, !badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
+			updateScore(badHit, scoreBop); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce
 		else
 			hudClass.botplayStuff();
 	}
