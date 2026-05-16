@@ -11,17 +11,22 @@ Compile Guide
 5. run `hmm install` to install all of the game's libraries.
 6. run `lime test windows` to compile the game.
 
-Features as of now:
+New Features:
 - Updates texture-atlas library to flixel animate.
-- Lower RAM usage + General Optimizations.
-- More visually pleasing sustains.
+- Lower RAM usage + multiple General Optimizations.
+- More visually pleasing sustain notes.
 - Removal of Language Support.
 - Removal of Title JSON.
-- Bug fixes.
+- Multiple Bug fixes from base Psych Engine.
 - Most libraries have been updated to newer verseions.
 - Moved HUD to its own class.
-- Reorganized file paths.
-
+- Reorganized some file paths.
+- Added Sustain Splashes from Base Game
+- And Alot more!
 Contributors:
-
+===========
 [ashley](https://x.com/superinky_) - Fixed UpdateScore() function not being called on LUA.
+
+Special Thanks:
+===========
+[Troll Engine](https://github.com/troll-slaiyers/FNF-Troll-Engine) - Hitsounds sound effect
