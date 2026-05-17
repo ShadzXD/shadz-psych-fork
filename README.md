@@ -2,7 +2,7 @@ My Personal Psych Engine v1.0.4 Fork made for fun.
 
 Aims to fix bugs with base Psych Engine and keep parity for the most part.
 
-Fork used for [Super Funkin' Galaxy](https://gamebanana.com/mods/444759) (next update) & [VS Oshawott: Funkin' Beyond](https://gamebanana.com/mods/660851).
+Fork used for [VS Oshawott: Funkin' Beyond](https://gamebanana.com/mods/660851).
 
 Compile Guide
 ===========
