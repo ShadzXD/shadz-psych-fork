@@ -1,3 +1,6 @@
+THIS FORK IS NO LONGER BEING MAINTAINED, IF YOU DONT CARE ABOUT LUA - PLEASE CHECK OUT THIS: https://github.com/ShadzXD/Competent-psych-engine
+
+
 My Personal Psych Engine v1.0.4 Fork made for fun.
 
 Aims to fix bugs with base Psych Engine and keep parity for the most part.
